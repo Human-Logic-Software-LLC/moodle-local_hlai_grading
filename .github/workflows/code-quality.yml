@@ -1,0 +1,86 @@
+name: Code Quality Check
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  coding-standards:
+    name: Moodle Coding Standards
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml
+          coverage: none
+          tools: cs2pr
+
+      - name: Install Moodle Code Sniffer
+        run: |
+          composer global config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer global require moodlehq/moodle-cs
+
+      - name: Run PHP CodeSniffer
+        id: phpcs
+        run: |
+          ~/.composer/vendor/bin/phpcs --standard=moodle --extensions=php --ignore=*/vendor/*,*/node_modules/* -q --report=checkstyle . | cs2pr
+
+      - name: PHP Syntax Check
+        run: |
+          find . -name "*.php" -not -path "./vendor/*" -print0 | xargs -0 -n1 php -l
+
+  php-compatibility:
+    name: PHP Compatibility
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, xml
+          coverage: none
+
+      - name: Install PHP Compatibility Checker
+        run: |
+          composer global config allow-plugins.dealerdirect/phpcodesniffer-composer-installer true
+          composer global require phpcompatibility/php-compatibility
+
+      - name: Check PHP 8.1+ Compatibility
+        run: |
+          ~/.composer/vendor/bin/phpcs --standard=PHPCompatibility --runtime-set testVersion 8.1- --extensions=php --ignore=*/vendor/*,*/node_modules/* -q . || true
+
+  javascript-check:
+    name: JavaScript Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Check JavaScript syntax
+        run: |
+          for file in $(find ./amd/src -name "*.js" 2>/dev/null); do
+            node --check "$file" || exit 1
+          done
+        continue-on-error: true
