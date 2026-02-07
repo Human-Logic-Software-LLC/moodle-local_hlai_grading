@@ -37,7 +37,12 @@ use core_privacy\local\request\writer;
 class provider implements
     \core_privacy\local\metadata\provider,
     \core_privacy\local\request\plugin\provider {
-
+    /**
+     * Get the list of metadata stored by this plugin.
+     *
+     * @param collection $collection The metadata collection.
+     * @return collection The updated collection.
+     */
     public static function get_metadata(collection $collection): collection {
         $collection->add_database_table('hlai_grading_queue', [
             'userid' => 'privacy:metadata:hlai_grading_queue:userid',
@@ -83,6 +88,12 @@ class provider implements
         return $collection;
     }
 
+    /**
+     * Get the list of contexts that contain user information for the specified user.
+     *
+     * @param int $userid The user ID.
+     * @return contextlist The list of contexts.
+     */
     public static function get_contexts_for_userid(int $userid): contextlist {
         global $DB;
 
@@ -99,6 +110,12 @@ class provider implements
         return $contextlist;
     }
 
+    /**
+     * Export all user data for the specified user.
+     *
+     * @param approved_contextlist $contextlist The approved context list.
+     * @return void
+     */
     public static function export_user_data(approved_contextlist $contextlist): void {
         global $DB;
 
@@ -131,6 +148,12 @@ class provider implements
         );
     }
 
+    /**
+     * Delete all user data for all users in the specified context.
+     *
+     * @param \context $context The context.
+     * @return void
+     */
     public static function delete_data_for_all_users_in_context(\context $context): void {
         global $DB;
 
@@ -145,6 +168,12 @@ class provider implements
         $DB->delete_records('hlai_grading_quiz_summary');
     }
 
+    /**
+     * Delete all user data for the specified user.
+     *
+     * @param approved_contextlist $contextlist The approved context list.
+     * @return void
+     */
     public static function delete_data_for_user(approved_contextlist $contextlist): void {
         global $DB;
 

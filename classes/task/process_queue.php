@@ -33,11 +33,20 @@ use local_hlai_grading\local\similarity;
  * Process_queue class.
  */
 class process_queue extends scheduled_task {
-
+    /**
+     * Get the task name.
+     *
+     * @return string The task name.
+     */
     public function get_name() {
         return get_string('task_process_queue', 'local_hlai_grading');
     }
 
+    /**
+     * Execute the queue processing task.
+     *
+     * @return void
+     */
     public function execute() {
         global $DB, $CFG;
 
@@ -433,7 +442,7 @@ class process_queue extends scheduled_task {
         // Hub might give us an object, array or raw JSON string.
         if (is_string($response)) {
             $decoded = json_decode($response, true);
-        } elseif (is_object($response) && property_exists($response, 'content')) {
+        } else if (is_object($response) && property_exists($response, 'content')) {
             // AI Hub returns: {"content": "...", "provider": "...", ...}
             $content = $response->content;
             
@@ -621,6 +630,10 @@ class process_queue extends scheduled_task {
 
     /**
      * Resolve best-guess context for logging/events.
+     *
+     * @param int|null $cmid Course module ID.
+     * @param int|null $courseid Course ID.
+     * @return \context The resolved context.
      */
     protected function resolve_context(?int $cmid, ?int $courseid): \context {
         if ($cmid) {
@@ -634,6 +647,10 @@ class process_queue extends scheduled_task {
 
     /**
      * Attempt to locate the latest submission id for an assignment/user pair.
+     *
+     * @param int $assignid Assignment ID.
+     * @param int $userid User ID.
+     * @return int|null The submission ID or null.
      */
     protected function find_submission_id(int $assignid, int $userid): ?int {
         global $DB;

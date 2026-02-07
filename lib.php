@@ -570,7 +570,7 @@ function local_hlai_grading_before_standard_top_of_body_html() {
     $html .= \html_writer::end_div();
 
     $html .= \html_writer::tag('script',
-        "document.addEventListener('DOMContentLoaded',function(){var banner=document.getElementById('ai-grading-banner');var page=document.getElementById('page');if(banner&&page&&!page.contains(banner)){page.insertBefore(banner,page.firstChild);}});",
+        "document.addEventListener('DOMContentLoaded',function (){var banner=document.getElementById('ai-grading-banner');var page=document.getElementById('page');if(banner&&page&&!page.contains(banner)){page.insertBefore(banner,page.firstChild);}});",
         ['type' => 'text/javascript']
     );
 

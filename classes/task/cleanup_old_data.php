@@ -30,11 +30,20 @@ defined('MOODLE_INTERNAL') || die();
  * Cleanup_old_data class.
  */
 class cleanup_old_data extends \core\task\scheduled_task {
-
+    /**
+     * Get the task name.
+     *
+     * @return string The task name.
+     */
     public function get_name(): string {
         return get_string('task_cleanup_old_data', 'local_hlai_grading');
     }
 
+    /**
+     * Execute the cleanup task.
+     *
+     * @return void
+     */
     public function execute(): void {
         global $DB;
 

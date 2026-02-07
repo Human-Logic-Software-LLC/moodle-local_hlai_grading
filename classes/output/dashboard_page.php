@@ -67,7 +67,7 @@ class dashboard_page implements renderable, templatable {
      */
     public function export_for_template(renderer_base $output): stdClass {
         $data = new stdClass();
-        $stats_service = new dashboard_stats();
+        $statsservice = new dashboard_stats();
 
         $data->is_admin = ($this->viewtype === 'admin');
         $data->is_teacher = ($this->viewtype === 'teacher');
@@ -78,12 +78,12 @@ class dashboard_page implements renderable, templatable {
 
         if ($data->is_admin) {
             if ($this->demomode) {
-                $stats = $stats_service->get_admin_demo_stats();
+                $stats = $statsservice->get_admin_demo_stats();
                 $data->is_demo = true;
             } else {
-                $stats = $stats_service->get_admin_stats();
+                $stats = $statsservice->get_admin_stats();
                 if ($this->is_admin_stats_empty($stats)) {
-                    $stats = $stats_service->get_admin_demo_stats();
+                    $stats = $statsservice->get_admin_demo_stats();
                     $data->is_demo = true;
                 }
             }
@@ -103,14 +103,14 @@ class dashboard_page implements renderable, templatable {
                 'top_courses_labels' => $stats['top_courses_labels'],
                 'top_courses_data' => $stats['top_courses_data']
             ]);
-        } elseif ($data->is_teacher && $this->courseid) {
+        } else if ($data->is_teacher && $this->courseid) {
             if ($this->demomode) {
-                $stats = $stats_service->get_teacher_demo_stats();
+                $stats = $statsservice->get_teacher_demo_stats();
                 $data->is_demo = true;
             } else {
-                $stats = $stats_service->get_teacher_stats($this->courseid);
+                $stats = $statsservice->get_teacher_stats($this->courseid);
                 if ($this->is_teacher_stats_empty($stats)) {
-                    $stats = $stats_service->get_teacher_demo_stats();
+                    $stats = $statsservice->get_teacher_demo_stats();
                     $data->is_demo = true;
                 }
             }

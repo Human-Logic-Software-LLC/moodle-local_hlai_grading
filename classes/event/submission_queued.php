@@ -27,24 +27,43 @@ namespace local_hlai_grading\event;
 defined('MOODLE_INTERNAL') || die();
 
 /**
- * Submission_queued class.
+ * Event triggered when a submission is queued for AI grading.
  */
 class submission_queued extends \core\event\base {
-
+    /**
+     * Initialize event data.
+     *
+     * @return void
+     */
     protected function init(): void {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_TEACHING;
         $this->data['objecttable'] = 'hlai_grading_queue';
     }
 
+    /**
+     * Get the event name.
+     *
+     * @return string The event name.
+     */
     public static function get_name(): string {
         return get_string('event_submission_queued', 'local_hlai_grading');
     }
 
+    /**
+     * Get the event description.
+     *
+     * @return string The event description.
+     */
     public function get_description(): string {
         return "AI grading queue item {$this->objectid} was created for user {$this->relateduserid}.";
     }
 
+    /**
+     * Get the event URL.
+     *
+     * @return \moodle_url The event URL.
+     */
     public function get_url(): \moodle_url {
         return new \moodle_url('/local/hlai_grading/error_details.php', ['id' => $this->objectid]);
     }

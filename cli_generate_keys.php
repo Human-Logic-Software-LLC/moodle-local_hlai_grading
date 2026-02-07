@@ -67,7 +67,7 @@ global $DB;
 $provider = 'none';
 if (class_exists('\\\\local_hlai_hub\\\\api') && \local_hlai_hub\api::is_ready()) {
     $provider = 'hlai_hub';
-} elseif (class_exists('\\\\local_hlai_hubproxy\\\\api')) {
+} else if (class_exists('\\\\local_hlai_hubproxy\\\\api')) {
     try {
         \local_hlai_hubproxy\api::health_check();
         $provider = 'hlai_hubproxy';
@@ -178,4 +178,3 @@ foreach ($pending as $item) {
 }
 
 echo "Updated pending queue items with generated keys: {$updated}\n";
-?>

@@ -64,7 +64,7 @@ $PAGE->set_title(get_string('dashboardheading', 'local_hlai_grading'));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->requires->css('/local/hlai_grading/styles.css');
 
-$$resolve_source = function (?string $model): string {
+$$resolvesource = function (?string $model): string {
     if (!$model) {
         return 'unknown';
     }
@@ -333,7 +333,7 @@ if (!$pending) {
         }
         $username = fullname($student);
         $gradetext = format_float($result->grade, 2) . ' / ' . format_float($result->maxgrade, 2);
-        $source = $resolve_source($result->model ?? '');
+        $source = $resolvesource($result->model ?? '');
         $sourcelabel = get_string('source_' . $source, 'local_hlai_grading');
         $graded = userdate($result->timecreated);
 
@@ -411,7 +411,7 @@ if ($rejected) {
         }
         $username = fullname($student);
         $gradetext = format_float($result->grade, 2) . ' / ' . format_float($result->maxgrade, 2);
-        $source = $resolve_source($result->model ?? '');
+        $source = $resolvesource($result->model ?? '');
         $sourcelabel = get_string('source_' . $source, 'local_hlai_grading');
         $rejectedon = $result->timereviewed ? userdate($result->timereviewed) : userdate($result->timecreated);
 
@@ -521,7 +521,7 @@ if ($released) {
             $reviewername = fullname($reviewer);
         }
 
-        $source = $resolve_source($record->model ?? '');
+        $source = $resolvesource($record->model ?? '');
         $sourcelabel = get_string('source_' . $source, 'local_hlai_grading');
 
         echo html_writer::start_tag('tr');

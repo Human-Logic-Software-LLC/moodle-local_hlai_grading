@@ -128,8 +128,8 @@ if ($confirm && confirm_sesskey()) {
 }
 
 // Fetch student submission content
-$submission_text = '';
-$question_text = '';
+$submissiontext = '';
+$questiontext = '';
 $user = $DB->get_record('user', ['id' => $result->userid], '*', MUST_EXIST);
 if ($assigninstance) {
     try {
@@ -141,28 +141,28 @@ if ($assigninstance) {
             if ($textplugin && $textplugin->is_enabled()) {
                 $text = $textplugin->get_editor_text('onlinetext', $submission->id);
                 if ($text) {
-                    $submission_text = format_text($text, FORMAT_HTML);
+                    $submissiontext = format_text($text, FORMAT_HTML);
                 }
             }
 
             // File submissions fallback.
-            if (empty($submission_text)) {
+            if (empty($submissiontext)) {
                 $fileplugin = $assigninstance->get_submission_plugin_by_type('file');
                 if ($fileplugin && $fileplugin->is_enabled()) {
                     $files = $fileplugin->get_files($submission, $user);
                     if (!empty($files)) {
-                        $submission_text = html_writer::tag('p', get_string('submittedfiles', 'local_hlai_grading') . ':');
-                        $submission_text .= html_writer::start_tag('ul');
+                        $submissiontext = html_writer::tag('p', get_string('submittedfiles', 'local_hlai_grading') . ':');
+                        $submissiontext .= html_writer::start_tag('ul');
                         foreach ($files as $file) {
-                            $submission_text .= html_writer::tag('li', $file->get_filename());
+                            $submissiontext .= html_writer::tag('li', $file->get_filename());
                         }
-                        $submission_text .= html_writer::end_tag('ul');
+                        $submissiontext .= html_writer::end_tag('ul');
                     }
                 }
             }
         }
     } catch (\Exception $e) {
-        $submission_text = html_writer::tag('p', get_string('submissionerror', 'local_hlai_grading', $e->getMessage()), ['class' => 'text-danger']);
+        $submissiontext = html_writer::tag('p', get_string('submissionerror', 'local_hlai_grading', $e->getMessage()), ['class' => 'text-danger']);
     }
 } else if ($modulename === 'quiz' && !empty($result->attemptid) && !empty($result->slot)) {
     try {
@@ -170,13 +170,13 @@ if ($assigninstance) {
         $quba = question_engine::load_questions_usage_by_activity($attempt->uniqueid);
         $qa = $quba->get_question_attempt((int)$result->slot);
         $question = $qa->get_question();
-        $question_text = format_text($question->questiontext, $question->questiontextformat ?? FORMAT_HTML, ['context' => $context]);
+        $questiontext = format_text($question->questiontext, $question->questiontextformat ?? FORMAT_HTML, ['context' => $context]);
         $answer = $qa->get_last_qt_var('answer') ?? $qa->get_response_summary();
         if ($answer) {
-            $submission_text = format_text($answer, FORMAT_HTML, ['context' => $context]);
+            $submissiontext = format_text($answer, FORMAT_HTML, ['context' => $context]);
         }
     } catch (\Exception $e) {
-        $submission_text = html_writer::tag('p', get_string('submissionerror', 'local_hlai_grading', $e->getMessage()), ['class' => 'text-danger']);
+        $submissiontext = html_writer::tag('p', get_string('submissionerror', 'local_hlai_grading', $e->getMessage()), ['class' => 'text-danger']);
     }
 }
 
@@ -193,15 +193,15 @@ echo html_writer::tag('h3', get_string('aigradingreview', 'local_hlai_grading'))
 echo html_writer::tag('p', html_writer::tag('strong', get_string('columnstudent', 'local_hlai_grading') . ': ') . fullname($user));
 
 // Question details for quizzes.
-if (!empty($question_text)) {
+if (!empty($questiontext)) {
     echo html_writer::tag('h4', get_string('question', 'quiz'));
-    echo html_writer::tag('div', $question_text, ['class' => 'alert alert-light border']);
+    echo html_writer::tag('div', $questiontext, ['class' => 'alert alert-light border']);
 }
 
 // Student submission content
-if (!empty($submission_text)) {
+if (!empty($submissiontext)) {
     echo html_writer::tag('h4', get_string('studentsubmission', 'local_hlai_grading'));
-    echo html_writer::tag('div', $submission_text, ['class' => 'alert alert-secondary border']);
+    echo html_writer::tag('div', $submissiontext, ['class' => 'alert alert-secondary border']);
 }
 
 // Grade info

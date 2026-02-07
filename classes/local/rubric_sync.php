@@ -99,9 +99,9 @@ class rubric_sync {
         debugging("Rubric definition ID: {$definition->id}", DEBUG_DEVELOPER);
 
         // Get criteria from the definition
-        $definition_criteria = $definition->rubric_criteria ?? [];
+        $definitioncriteria = $definition->rubric_criteria ?? [];
 
-        debugging("Available rubric criteria IDs: " . implode(', ', array_keys($definition_criteria)), DEBUG_DEVELOPER);
+        debugging("Available rubric criteria IDs: " . implode(', ', array_keys($definitioncriteria)), DEBUG_DEVELOPER);
 
         // Get or create grade record
         $submission = $assign->get_user_submission($userid, false);
@@ -132,58 +132,58 @@ class rubric_sync {
             $aifeedback = $aicriterion['feedback'] ?? '';
 
             // Find matching criterion in definition
-            $matched_criterionid = null;
-            foreach ($definition_criteria as $critid => $critdata) {
+            $matchedcriterionid = null;
+            foreach ($definitioncriteria as $critid => $critdata) {
                 if ($this->normalize_name($critdata['description']) === $ainame) {
-                    $matched_criterionid = $critid;
+                    $matchedcriterionid = $critid;
                     break;
                 }
             }
 
-            if (!$matched_criterionid) {
+            if (!$matchedcriterionid) {
                 debugging("Criterion '{$aicriterion['name']}' not found in rubric definition", DEBUG_DEVELOPER);
                 continue;
             }
 
-            $criterion_def = $definition_criteria[$matched_criterionid];
-            $levels = $criterion_def['levels'] ?? [];
+            $criteriondef = $definitioncriteria[$matchedcriterionid];
+            $levels = $criteriondef['levels'] ?? [];
 
-            debugging("Processing criterion {$matched_criterionid}: {$criterion_def['description']}", DEBUG_DEVELOPER);
+            debugging("Processing criterion {$matchedcriterionid}: {$criteriondef['description']}", DEBUG_DEVELOPER);
 
             // Find matching level by score
-            $matched_levelid = null;
+            $matchedlevelid = null;
 
             foreach ($levels as $levelid => $level) {
                 $levelscore = (float)$level['score'];
                 if ($levelscore == $aiscore) {
-                    $matched_levelid = $levelid;
+                    $matchedlevelid = $levelid;
                     debugging("Exact level match found: levelid={$levelid}, score={$levelscore}", DEBUG_DEVELOPER);
                     break;
                 }
             }
 
             // If no exact match, find closest level
-            if (!$matched_levelid && !empty($levels)) {
-                $closest_diff = PHP_FLOAT_MAX;
+            if (!$matchedlevelid && !empty($levels)) {
+                $closestdiff = PHP_FLOAT_MAX;
                 foreach ($levels as $levelid => $level) {
                     $levelscore = (float)$level['score'];
                     $diff = abs($levelscore - $aiscore);
-                    if ($diff < $closest_diff) {
-                        $closest_diff = $diff;
-                        $matched_levelid = $levelid;
+                    if ($diff < $closestdiff) {
+                        $closestdiff = $diff;
+                        $matchedlevelid = $levelid;
                     }
                 }
-                debugging("Closest level match: levelid={$matched_levelid}", DEBUG_DEVELOPER);
+                debugging("Closest level match: levelid={$matchedlevelid}", DEBUG_DEVELOPER);
             }
 
-            if (!$matched_levelid) {
-                debugging("No suitable level found for criterion {$matched_criterionid}", DEBUG_DEVELOPER);
+            if (!$matchedlevelid) {
+                debugging("No suitable level found for criterion {$matchedcriterionid}", DEBUG_DEVELOPER);
                 continue;
             }
 
             // Add to fillings array in controller format
-            $fillings['criteria'][$matched_criterionid] = [
-                'levelid' => $matched_levelid,
+            $fillings['criteria'][$matchedcriterionid] = [
+                'levelid' => $matchedlevelid,
                 'remark' => $aifeedback,
             ];
         }

@@ -120,7 +120,7 @@ foreach ($grouped as $attemptid => $attemptresults) {
         if (!empty($question->graderinfo)) {
             $graderraw = (string)$question->graderinfo;
             $graderformat = $question->graderinfoformat ?? FORMAT_HTML;
-        } elseif (!empty($question->options) && !empty($question->options->graderinfo)) {
+        } else if (!empty($question->options) && !empty($question->options->graderinfo)) {
             $graderraw = (string)$question->options->graderinfo;
             $graderformat = $question->options->graderinfoformat ?? FORMAT_HTML;
         }
@@ -191,4 +191,3 @@ foreach ($grouped as $attemptid => $attemptresults) {
 echo "Regraded results: {$updated}\n";
 echo "Skipped results: {$skipped}\n";
 echo "Errors: {$errors}\n";
-?>

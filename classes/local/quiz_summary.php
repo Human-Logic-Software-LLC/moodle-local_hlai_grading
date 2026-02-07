@@ -510,7 +510,7 @@ class quiz_summary {
             $response = $question->get_correct_response();
             if (is_array($response) && method_exists($question, 'summarise_response')) {
                 $rightanswer = (string)$question->summarise_response($response);
-            } elseif (!is_array($response)) {
+            } else if (!is_array($response)) {
                 $rightanswer = (string)$response;
             }
         }
@@ -546,7 +546,7 @@ class quiz_summary {
             if (!empty($question->graderinfo)) {
                 $raw = (string)$question->graderinfo;
                 $format = $question->graderinfoformat ?? FORMAT_HTML;
-            } elseif (!empty($question->options) && !empty($question->options->graderinfo)) {
+            } else if (!empty($question->options) && !empty($question->options->graderinfo)) {
                 $raw = (string)$question->options->graderinfo;
                 $format = $question->options->graderinfoformat ?? FORMAT_HTML;
             }
@@ -604,7 +604,7 @@ class quiz_summary {
 
     private static function build_score_strengths(array $details): array {
         $sorted = $details;
-        usort($sorted, static function($a, $b) {
+        usort($sorted, static function ($a, $b) {
             $ascore = self::question_score_percent($a);
             $bscore = self::question_score_percent($b);
             if ($ascore === null && $bscore === null) {
@@ -633,7 +633,7 @@ class quiz_summary {
 
     private static function build_score_improvements(array $details): array {
         $sorted = $details;
-        usort($sorted, static function($a, $b) {
+        usort($sorted, static function ($a, $b) {
             $ascore = self::question_score_percent($a);
             $bscore = self::question_score_percent($b);
             if ($ascore === null && $bscore === null) {

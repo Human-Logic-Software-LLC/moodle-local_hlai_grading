@@ -242,7 +242,7 @@ class renderer extends \plugin_renderer_base {
         }
         $controller = $gradingmanager->get_controller($method);
 
-        $userids = array_unique(array_map(static function($result) {
+        $userids = array_unique(array_map(static function ($result) {
             return (int)$result->userid;
         }, $results));
         $users = $userids ? user_get_users_by_id($userids) : [];
@@ -361,9 +361,9 @@ class renderer extends \plugin_renderer_base {
      */
     private function get_rubric_hiding_script(): string {
         $js = <<<JS
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var blocks = document.querySelectorAll('.advancedgrade');
-    blocks.forEach(function(block) {
+    blocks.forEach(function (block) {
         if (block.closest('.ai-rubric-preview-card')) {
             return;
         }
