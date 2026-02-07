@@ -46,13 +46,13 @@ class dashboard_stats {
         $failures = $DB->count_records_select('hlai_grading_queue', "status = 'failed' OR retries >= 3");
 
         // 4. Token Usage (Sum of tokens_used).
-        $tokensql = "SELECT SUM(tokens_used) FROM {local_hlai_grading_grading_results}";
+        $tokensql = "SELECT SUM(tokens_used) FROM {local_hlai_grading_results}";
         $totaltokens = $DB->get_field_sql($tokensql) ?: 0;
 
         // 5. Recent Activity Graph Data (Last 7 days).
         $weekago = time() - (7 * 24 * 3600);
         $activitysql = "SELECT FROM_UNIXTIME(timecreated, '%Y-%m-%d') as date, COUNT(*) as count
-                         FROM {local_hlai_grading_grading_results}
+                         FROM {local_hlai_grading_results}
                          WHERE timecreated > :time
                          GROUP BY FROM_UNIXTIME(timecreated, '%Y-%m-%d')
                          ORDER BY date ASC";
@@ -62,7 +62,7 @@ class dashboard_stats {
         // However, for simplicity let's stick to a basic count for now or handle date grouping in PHP if strictly needed.
         // Let's grab the raw timestamps and process in PHP for max compatibility.
 
-        $activityrawsql = "SELECT timecreated FROM {local_hlai_grading_grading_results} WHERE timecreated > :time ORDER BY timecreated ASC";
+        $activityrawsql = "SELECT timecreated FROM {local_hlai_grading_results} WHERE timecreated > :time ORDER BY timecreated ASC";
         $rawactivity = $DB->get_fieldset_sql($activityrawsql, ['time' => $weekago]);
 
         $activitydata = [];
@@ -83,8 +83,8 @@ class dashboard_stats {
 
         // 6. Top Courses by Usage (Adoption).
         $topcoursessql = "SELECT c.shortname, COUNT(r.id) as count
-                            FROM {local_hlai_grading_grading_results} r
-                            JOIN {local_hlai_grading_grading_queue} q ON r.queueid = q.id
+                            FROM {local_hlai_grading_results} r
+                            JOIN {local_hlai_grading_queue} q ON r.queueid = q.id
                             JOIN {course} c ON q.courseid = c.id
                             GROUP BY c.id, c.shortname
                             ORDER BY count DESC";
@@ -114,8 +114,8 @@ class dashboard_stats {
         // We will only look at the last 100 graded items to keep dashboard fast.
 
         $trustsql = "SELECT r.grade as aigrade, r.maxgrade, gg.finalgrade, gi.grademax
-                      FROM {local_hlai_grading_grading_results} r
-                      JOIN {local_hlai_grading_grading_queue} q ON r.queueid = q.id
+                      FROM {local_hlai_grading_results} r
+                      JOIN {local_hlai_grading_queue} q ON r.queueid = q.id
                       JOIN {grade_items} gi ON (gi.iteminstance = q.instanceid AND gi.itemmodule = q.modulename)
                       JOIN {grade_grades} gg ON (gg.itemid = gi.id AND gg.userid = r.userid)
                       WHERE r.status = 'released'
@@ -177,15 +177,15 @@ class dashboard_stats {
         // 2. Graded Items for this course.
         // Need to join via queueid to get courseid context.
         $gradedsql = "SELECT COUNT(r.id)
-                       FROM {local_hlai_grading_grading_results} r
-                       JOIN {local_hlai_grading_grading_queue} q ON r.queueid = q.id
+                       FROM {local_hlai_grading_results} r
+                       JOIN {local_hlai_grading_queue} q ON r.queueid = q.id
                        WHERE q.courseid = :courseid";
         $gradedcount = $DB->count_records_sql($gradedsql, ['courseid' => $courseid]);
 
         // 3. Upcoming/Recent items.
         $recentsql = "SELECT r.id, r.grade, r.timecreated, q.modulename, q.cmid
-                       FROM {local_hlai_grading_grading_results} r
-                       JOIN {local_hlai_grading_grading_queue} q ON r.queueid = q.id
+                       FROM {local_hlai_grading_results} r
+                       JOIN {local_hlai_grading_queue} q ON r.queueid = q.id
                        WHERE q.courseid = :courseid
                        ORDER BY r.timecreated DESC";
         $recentitems = $DB->get_records_sql($recentsql, ['courseid' => $courseid], 0, 5);
@@ -199,8 +199,8 @@ class dashboard_stats {
 
         // 4. Grade Distribution (Histogram).
         $gradessql = "SELECT r.grade, r.maxgrade
-                       FROM {local_hlai_grading_grading_results} r
-                       JOIN {local_hlai_grading_grading_queue} q ON r.queueid = q.id
+                       FROM {local_hlai_grading_results} r
+                       JOIN {local_hlai_grading_queue} q ON r.queueid = q.id
                        WHERE q.courseid = :courseid AND r.grade IS NOT NULL";
         $grades = $DB->get_records_sql($gradessql, ['courseid' => $courseid]);
 
@@ -232,9 +232,9 @@ class dashboard_stats {
         // 5. Rubric Analysis (Weakest/Strongest Criteria).
         // Join rubric scores -> results -> queue (course).
         $rubricsql = "SELECT rs.criterionname, AVG(rs.score / rs.maxscore) as avgnormscore
-                       FROM {local_hlai_grading_grading_rubric_scores} rs
-                       JOIN {local_hlai_grading_grading_results} r ON rs.resultid = r.id
-                       JOIN {local_hlai_grading_grading_queue} q ON r.queueid = q.id
+                       FROM {local_hlai_grading_rubric_scores} rs
+                       JOIN {local_hlai_grading_results} r ON rs.resultid = r.id
+                       JOIN {local_hlai_grading_queue} q ON r.queueid = q.id
                        WHERE q.courseid = :courseid AND rs.maxscore > 0
                        GROUP BY rs.criterionname
                        ORDER BY avgnormscore ASC"; // Ascending: Weakest first.
@@ -255,8 +255,8 @@ class dashboard_stats {
         $riskthreshold = 50; // Configurable ideally.
 
         $risksql = "SELECT r.userid, r.grade, r.maxgrade, q.modulename, r.timecreated
-                     FROM {local_hlai_grading_grading_results} r
-                     JOIN {local_hlai_grading_grading_queue} q ON r.queueid = q.id
+                     FROM {local_hlai_grading_results} r
+                     JOIN {local_hlai_grading_queue} q ON r.queueid = q.id
                      WHERE q.courseid = :courseid
                        AND r.grade IS NOT NULL
                        AND r.maxgrade > 0
@@ -410,7 +410,7 @@ class dashboard_stats {
         global $DB;
 
         $errorsql = "SELECT l.id, l.queueid, l.action, l.details, l.timecreated
-                       FROM {local_hlai_grading_grading_log} l
+                       FROM {local_hlai_grading_log} l
                       WHERE l.action IN ('failed', 'retry')
                    ORDER BY l.timecreated DESC";
         $records = $DB->get_records_sql($errorsql, [], 0, $limit);

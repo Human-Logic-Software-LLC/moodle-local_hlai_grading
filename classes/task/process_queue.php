@@ -60,7 +60,7 @@ class process_queue extends scheduled_task {
 
         // SPEC: Fetch pending items that are ready to run (respect nextrun for retries).
         $now = time();
-        $sql = "SELECT * FROM {local_hlai_grading_grading_queue}
+        $sql = "SELECT * FROM {local_hlai_grading_queue}
                 WHERE status = :status
                 AND (nextrun IS NULL OR nextrun <= :now)
                 ORDER BY timecreated ASC";

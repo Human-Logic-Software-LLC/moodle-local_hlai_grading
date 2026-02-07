@@ -82,7 +82,7 @@ class get_ai_statuses extends external_api {
 
         $results = $DB->get_records_sql("
             SELECT r.*
-              FROM {local_hlai_grading_grading_results} r
+              FROM {local_hlai_grading_results} r
              WHERE r.instanceid = :assignid
         ", ['assignid' => $assignid]);
 
@@ -100,7 +100,7 @@ class get_ai_statuses extends external_api {
 
         $pendingqueues = $DB->get_records_sql("
             SELECT *
-              FROM {local_hlai_grading_grading_queue}
+              FROM {local_hlai_grading_queue}
              WHERE status = :status
                AND component = :component
         ", ['status' => 'pending', 'component' => 'mod_assign']);

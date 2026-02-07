@@ -51,7 +51,7 @@ class renderer extends \plugin_renderer_base {
 
         $sql = "
             SELECT r.*
-              FROM {local_hlai_grading_grading_results} r
+              FROM {local_hlai_grading_results} r
              WHERE r.userid = :userid
                AND r.instanceid = :assignid
           ORDER BY r.timecreated DESC";
@@ -62,7 +62,7 @@ class renderer extends \plugin_renderer_base {
             $queue = null;
             $queues = $DB->get_records_sql("
                 SELECT *
-                  FROM {local_hlai_grading_grading_queue}
+                  FROM {local_hlai_grading_queue}
                  WHERE userid = :userid
               ORDER BY timecreated DESC
             ", ['userid' => $userid], 0, 20);
@@ -135,7 +135,7 @@ class renderer extends \plugin_renderer_base {
                 COUNT(*) AS total,
                 SUM(CASE WHEN status = 'draft' THEN 1 ELSE 0 END) AS pending_review,
                 SUM(CASE WHEN status = 'released' THEN 1 ELSE 0 END) AS released
-              FROM {local_hlai_grading_grading_results}
+              FROM {local_hlai_grading_results}
              WHERE instanceid = :assignid
         ", ['assignid' => $assignid]);
 
@@ -199,7 +199,7 @@ class renderer extends \plugin_renderer_base {
         ];
         $sql = "
             SELECT *
-              FROM {local_hlai_grading_grading_results}
+              FROM {local_hlai_grading_results}
              WHERE instanceid = :instanceid
                AND modulename = :modname
                AND status = :status

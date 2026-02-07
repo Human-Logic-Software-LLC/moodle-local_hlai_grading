@@ -95,7 +95,7 @@ if ($action === 'releaseall') {
 
     $drafts = $DB->get_records_sql("
         SELECT r.id
-          FROM {local_hlai_grading_grading_results} r
+          FROM {local_hlai_grading_results} r
           JOIN {course_modules} cm ON cm.instance = r.instanceid
           JOIN {modules} m ON m.id = cm.module AND m.name = r.modulename
          WHERE r.status = 'draft'
@@ -183,7 +183,7 @@ $pending = $DB->get_records_sql("
            cm.id AS cmid,
            u.id AS studentid
            {$studentfieldssql->selects}
-      FROM {local_hlai_grading_grading_results} r
+      FROM {local_hlai_grading_results} r
       JOIN {user} u ON u.id = r.userid
       {$studentfieldssql->joins}
       JOIN {course_modules} cm ON cm.instance = r.instanceid
@@ -199,7 +199,7 @@ $rejected = $DB->get_records_sql("
            cm.id AS cmid,
            u.id AS studentid
            {$studentfieldssql->selects}
-      FROM {local_hlai_grading_grading_results} r
+      FROM {local_hlai_grading_results} r
       JOIN {user} u ON u.id = r.userid
       {$studentfieldssql->joins}
       JOIN {course_modules} cm ON cm.instance = r.instanceid
@@ -220,7 +220,7 @@ $released = $DB->get_records_sql("
            rev.id AS reviewerid
            {$studentfieldssql->selects}
            {$reviewerfieldssql->selects}
-      FROM {local_hlai_grading_grading_results} r
+      FROM {local_hlai_grading_results} r
       JOIN {user} u ON u.id = r.userid
       {$studentfieldssql->joins}
       JOIN {course_modules} cm ON cm.instance = r.instanceid
@@ -235,7 +235,7 @@ $released = $DB->get_records_sql("
 // Summary counts for KPI cards.
 $countsql = "
     SELECT COUNT(1)
-      FROM {local_hlai_grading_grading_results} r
+      FROM {local_hlai_grading_results} r
       JOIN {course_modules} cm ON cm.instance = r.instanceid
       JOIN {modules} m ON m.id = cm.module AND m.name = r.modulename
      WHERE r.status = :status

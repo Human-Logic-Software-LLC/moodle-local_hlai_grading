@@ -39,18 +39,18 @@ $stats = $DB->get_record_sql(
         SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS pending,
         SUM(CASE WHEN status = 'done' THEN 1 ELSE 0 END) AS completed,
         SUM(CASE WHEN status IN ('failed', 'error') THEN 1 ELSE 0 END) AS failed
-     FROM {local_hlai_grading_grading_queue}"
+     FROM {local_hlai_grading_queue}"
 );
 
 $processingtime = $DB->get_field_sql(
     "SELECT AVG(timecompleted - timecreated)
-       FROM {local_hlai_grading_grading_queue}
+       FROM {local_hlai_grading_queue}
       WHERE status = 'done' AND timecompleted IS NOT NULL"
 );
 
 $oldestpending = $DB->get_field_sql(
     "SELECT MIN(timecreated)
-       FROM {local_hlai_grading_grading_queue}
+       FROM {local_hlai_grading_queue}
       WHERE status = 'pending'"
 );
 

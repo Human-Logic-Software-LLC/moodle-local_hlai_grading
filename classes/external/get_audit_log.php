@@ -91,7 +91,7 @@ class get_audit_log extends external_api {
         $where = $conditions ? ('WHERE ' . implode(' AND ', $conditions)) : '';
 
         $sql = "SELECT id, queueid, resultid, action, userid, details, timecreated
-                FROM {local_hlai_grading_grading_log}
+                FROM {local_hlai_grading_log}
                 $where
                 ORDER BY timecreated DESC
                 LIMIT $limitnum";

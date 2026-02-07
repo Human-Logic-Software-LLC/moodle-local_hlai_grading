@@ -69,18 +69,18 @@ class get_queue_stats extends external_api {
                     SUM(CASE WHEN status = 'processing' THEN 1 ELSE 0 END) AS processing,
                     SUM(CASE WHEN status = 'done' THEN 1 ELSE 0 END) AS completed,
                     SUM(CASE WHEN status IN ('failed', 'error') THEN 1 ELSE 0 END) AS failed
-               FROM {local_hlai_grading_grading_queue}"
+               FROM {local_hlai_grading_queue}"
         );
 
         $oldestpending = $DB->get_field_sql(
             "SELECT MIN(timecreated)
-               FROM {local_hlai_grading_grading_queue}
+               FROM {local_hlai_grading_queue}
               WHERE status = 'pending'"
         );
 
         $averageprocessing = $DB->get_field_sql(
             "SELECT AVG(timecompleted - timecreated)
-               FROM {local_hlai_grading_grading_queue}
+               FROM {local_hlai_grading_queue}
               WHERE status = 'done'
                 AND timecompleted IS NOT NULL"
         );
