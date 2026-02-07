@@ -135,7 +135,7 @@ if (!empty($rubrics)) {
     [$insql, $params] = $DB->get_in_or_equal(array_keys($rubrics), SQL_PARAMS_NAMED);
     $countrecords = $DB->get_records_sql(
         "SELECT rubricid, COUNT(1) AS itemcount
-           FROM {hlai_quiz_rubric_item}
+           FROM {local_hlai_grading_quiz_rubric_item}
           WHERE rubricid {$insql}
        GROUP BY rubricid",
         $params

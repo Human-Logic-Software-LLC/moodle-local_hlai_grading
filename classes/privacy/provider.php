@@ -132,8 +132,8 @@ class provider implements
         $data->results = array_values($DB->get_records('hlai_grading_results', ['userid' => $userid]));
         $data->rubric_scores = array_values($DB->get_records_sql(
             'SELECT rs.*
-               FROM {hlai_grading_rubric_scores} rs
-               JOIN {hlai_grading_results} r ON r.id = rs.resultid
+               FROM {local_hlai_grading_grading_rubric_scores} rs
+               JOIN {local_hlai_grading_grading_results} r ON r.id = rs.resultid
               WHERE r.userid = :userid',
             ['userid' => $userid]
         ));
@@ -185,7 +185,7 @@ class provider implements
         $DB->delete_records('hlai_grading_results', ['userid' => $userid]);
         $DB->delete_records_select(
             'hlai_grading_rubric_scores',
-            'resultid IN (SELECT id FROM {hlai_grading_results} WHERE userid = :userid)',
+            'resultid IN (SELECT id FROM {local_hlai_grading_grading_results} WHERE userid = :userid)',
             ['userid' => $userid]
         );
         $DB->delete_records('hlai_grading_log', ['userid' => $userid]);

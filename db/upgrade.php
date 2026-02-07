@@ -35,7 +35,7 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
     // SPEC compliance upgrade: Add new tables and fields for workflow management.
     if ($oldversion < 2025110700) {
         // Add new fields to existing queue table.
-        $table = new xmldb_table('hlai_grading_queue');
+        $table = new xmldb_table('local_hlai_grading_queue');
 
         // Add modulename field.
         $field = new xmldb_field('modulename', XMLDB_TYPE_CHAR, '50', null, null, null, null, 'cmid');
@@ -86,7 +86,7 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
         }
 
         // Create hlai_grading_results table.
-        $table = new xmldb_table('hlai_grading_results');
+        $table = new xmldb_table('local_hlai_grading_results');
         if (!$dbman->table_exists($table)) {
             $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
             $table->add_field('queueid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
@@ -121,7 +121,7 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
         }
 
         // Create hlai_grading_rubric_scores table.
-        $table = new xmldb_table('hlai_grading_rubric_scores');
+        $table = new xmldb_table('local_hlai_grading_rubric_scores');
         if (!$dbman->table_exists($table)) {
             $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
             $table->add_field('resultid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
@@ -138,7 +138,7 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
         }
 
         // Create hlai_grading_log table.
-        $table = new xmldb_table('hlai_grading_log');
+        $table = new xmldb_table('local_hlai_grading_log');
         if (!$dbman->table_exists($table)) {
             $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
             $table->add_field('queueid', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
@@ -157,7 +157,7 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
         }
 
         // Create hlai_grading_config table.
-        $table = new xmldb_table('hlai_grading_config');
+        $table = new xmldb_table('local_hlai_grading_config');
         if (!$dbman->table_exists($table)) {
             $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
             $table->add_field('name', XMLDB_TYPE_CHAR, '100', null, XMLDB_NOTNULL, null, null);
@@ -175,8 +175,8 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
     }
 
     if ($oldversion < 2025110701) {
-        $table = new xmldb_table('hlai_grading_act_settings');
-        if (!$dbman->table_exists('hlai_grading_act_settings')) {
+        $table = new xmldb_table('local_hlai_grading_act_settings');
+        if (!$dbman->table_exists('local_hlai_grading_act_settings')) {
             $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
             $table->add_field('assignid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
             $table->add_field('enabled', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0');
@@ -197,14 +197,14 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
 
     if ($oldversion < 2025110702) {
         // Add slot field to results table.
-        $table = new xmldb_table('hlai_grading_results');
+        $table = new xmldb_table('local_hlai_grading_results');
         $field = new xmldb_field('slot', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'questionid');
         if (!$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
 
         // Create new activity settings table.
-        $table = new xmldb_table('hlai_grading_act_settings');
+        $table = new xmldb_table('local_hlai_grading_act_settings');
         if (!$dbman->table_exists($table)) {
             $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
             $table->add_field('modulename', XMLDB_TYPE_CHAR, '50', null, XMLDB_NOTNULL, null, null);
@@ -223,8 +223,8 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
         }
 
         // Migrate existing assignment settings if old table exists.
-        if ($dbman->table_exists('hlai_grading_act_settings')) {
-            $records = $DB->get_records('hlai_grading_act_settings');
+        if ($dbman->table_exists('local_hlai_grading_act_settings')) {
+            $records = $DB->get_records('local_hlai_grading_act_settings');
             foreach ($records as $record) {
                 $new = new \stdClass();
                 $new->modulename = 'assign';
@@ -235,10 +235,10 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
                 $new->autorelease = $record->autorelease;
                 $new->timecreated = $record->timecreated;
                 $new->timemodified = $record->timemodified;
-                $DB->insert_record('hlai_grading_activity_settings', $new);
+                $DB->insert_record('local_hlai_grading_activity_settings', $new);
             }
 
-            $oldtable = new xmldb_table('hlai_grading_assign_settings');
+            $oldtable = new xmldb_table('local_hlai_grading_assign_settings');
             if ($dbman->table_exists($oldtable)) {
                 $dbman->drop_table($oldtable);
             }
@@ -248,7 +248,7 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
     }
 
     if ($oldversion < 2025111000) {
-        $table = new xmldb_table('hlai_grading_results');
+        $table = new xmldb_table('local_hlai_grading_results');
 
         $field = new xmldb_field('prompttokens', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'tokens_used');
         if (!$dbman->field_exists($table, $field)) {
@@ -264,7 +264,7 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
     }
 
     if ($oldversion < 2025111300) {
-        $table = new xmldb_table('hlai_grading_results');
+        $table = new xmldb_table('local_hlai_grading_results');
 
         $field = new xmldb_field('strengths_json', XMLDB_TYPE_TEXT, null, null, null, null, null, 'rubric_analysis');
         if (!$dbman->field_exists($table, $field)) {
@@ -286,7 +286,7 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
             $dbman->add_field($table, $field);
         }
 
-        $table = new xmldb_table('hlai_grading_rubric_scores');
+        $table = new xmldb_table('local_hlai_grading_rubric_scores');
 
         $field = new xmldb_field('criterionname', XMLDB_TYPE_CHAR, '255', null, null, null, null, 'criterionid');
         if (!$dbman->field_exists($table, $field)) {
@@ -308,14 +308,14 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
 
     if ($oldversion < 2025120100) {
         // Add rubricid to activity settings for quiz use.
-        $table = new xmldb_table('hlai_grading_act_settings');
+        $table = new xmldb_table('local_hlai_grading_act_settings');
         $field = new xmldb_field('rubricid', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'autorelease');
         if ($dbman->table_exists($table) && !$dbman->field_exists($table, $field)) {
             $dbman->add_field($table, $field);
         }
 
         // Create quiz rubric table.
-        $rubrictable = new xmldb_table('hlai_quiz_rubric');
+        $rubrictable = new xmldb_table('local_hlai_grading_quiz_rubric');
         if (!$dbman->table_exists($rubrictable)) {
             $rubrictable->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
             $rubrictable->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
@@ -331,7 +331,7 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
             $dbman->create_table($rubrictable);
         }
 
-        $itemtable = new xmldb_table('hlai_quiz_rubric_item');
+        $itemtable = new xmldb_table('local_hlai_grading_quiz_rubric_item');
         if (!$dbman->table_exists($itemtable)) {
             $itemtable->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
             $itemtable->add_field('rubricid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
@@ -341,7 +341,7 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
             $itemtable->add_field('description', XMLDB_TYPE_TEXT, null, null, null, null, null);
 
             $itemtable->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-            $itemtable->add_key('rubricfk', XMLDB_KEY_FOREIGN, ['rubricid'], 'hlai_quiz_rubric', ['id']);
+            $itemtable->add_key('rubricfk', XMLDB_KEY_FOREIGN, ['rubricid'], 'local_hlai_grading_quiz_rubric', ['id']);
 
             $dbman->create_table($itemtable);
         }
@@ -350,7 +350,7 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
     }
 
     if ($oldversion < 2025120104) {
-        $table = new xmldb_table('hlai_grading_quiz_summary');
+        $table = new xmldb_table('local_hlai_grading_quiz_summary');
         if (!$dbman->table_exists($table)) {
             $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
             $table->add_field('quizid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);

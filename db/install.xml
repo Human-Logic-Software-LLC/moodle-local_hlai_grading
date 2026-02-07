@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <XMLDB PATH="local/hlai_grading/db" VERSION="2025120104" COMMENT="AI grading tables" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <TABLES>
-        <TABLE NAME="hlai_grading_queue" COMMENT="Submissions waiting for AI grading">
+        <TABLE NAME="local_hlai_grading_grading_queue" COMMENT="Submissions waiting for AI grading">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true"/>
@@ -25,7 +25,7 @@
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
             </KEYS>
         </TABLE>
-        <TABLE NAME="hlai_grading_results" COMMENT="AI grading results stored as drafts first">
+        <TABLE NAME="local_hlai_grading_grading_results" COMMENT="AI grading results stored as drafts first">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="queueid" TYPE="int" LENGTH="10" NOTNULL="true"/>
@@ -67,7 +67,7 @@
                 <INDEX NAME="statusidx" UNIQUE="false" FIELDS="status"/>
             </INDEXES>
         </TABLE>
-        <TABLE NAME="hlai_grading_rubric_scores" COMMENT="Per-criterion AI rubric scores">
+        <TABLE NAME="local_hlai_grading_grading_rubric_scores" COMMENT="Per-criterion AI rubric scores">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="resultid" TYPE="int" LENGTH="10" NOTNULL="true"/>
@@ -87,7 +87,7 @@
                 <INDEX NAME="resultidx" UNIQUE="false" FIELDS="resultid"/>
             </INDEXES>
         </TABLE>
-        <TABLE NAME="hlai_grading_log" COMMENT="Audit trail for AI grading actions">
+        <TABLE NAME="local_hlai_grading_grading_log" COMMENT="Audit trail for AI grading actions">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="queueid" TYPE="int" LENGTH="10" NOTNULL="false"/>
@@ -106,7 +106,7 @@
                 <INDEX NAME="actionidx" UNIQUE="false" FIELDS="action"/>
             </INDEXES>
         </TABLE>
-        <TABLE NAME="hlai_grading_config" COMMENT="Plugin-wide config">
+        <TABLE NAME="local_hlai_grading_grading_config" COMMENT="Plugin-wide config">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="name" TYPE="char" LENGTH="100" NOTNULL="true"/>
@@ -121,7 +121,7 @@
                 <INDEX NAME="nameuniq" UNIQUE="true" FIELDS="name"/>
             </INDEXES>
         </TABLE>
-        <TABLE NAME="hlai_grading_act_settings" COMMENT="Per-activity AI grading settings">
+        <TABLE NAME="local_hlai_grading_grading_act_settings" COMMENT="Per-activity AI grading settings">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="modulename" TYPE="char" LENGTH="50" NOTNULL="true"/>
@@ -143,7 +143,7 @@
         </TABLE>
 
         <!-- Quiz-specific lightweight rubrics -->
-        <TABLE NAME="hlai_quiz_rubric" COMMENT="AI quiz rubrics (lightweight)">
+        <TABLE NAME="local_hlai_grading_quiz_rubric" COMMENT="AI quiz rubrics (lightweight)">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true"/>
@@ -161,7 +161,7 @@
             </INDEXES>
         </TABLE>
 
-        <TABLE NAME="hlai_quiz_rubric_item" COMMENT="Items/criteria for AI quiz rubrics">
+        <TABLE NAME="local_hlai_grading_quiz_rubric_item" COMMENT="Items/criteria for AI quiz rubrics">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="rubricid" TYPE="int" LENGTH="10" NOTNULL="true"/>
@@ -172,11 +172,11 @@
             </FIELDS>
             <KEYS>
                 <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-                <KEY NAME="rubricfk" TYPE="foreign" FIELDS="rubricid" REFTABLE="hlai_quiz_rubric" REFFIELDS="id"/>
+                <KEY NAME="rubricfk" TYPE="foreign" FIELDS="rubricid" REFTABLE="local_hlai_grading_quiz_rubric" REFFIELDS="id"/>
             </KEYS>
         </TABLE>
 
-        <TABLE NAME="hlai_grading_quiz_summary" COMMENT="Quiz attempt feedback summaries">
+        <TABLE NAME="local_hlai_grading_grading_quiz_summary" COMMENT="Quiz attempt feedback summaries">
             <FIELDS>
                 <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
                 <FIELD NAME="quizid" TYPE="int" LENGTH="10" NOTNULL="true"/>
