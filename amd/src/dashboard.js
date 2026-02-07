@@ -44,7 +44,7 @@ define(['local_hlai_grading/iksha_charts'], function(IkshaCharts) {
                 categories: data.top_courses_labels,
             },
             colors: [IkshaCharts.colors.info],
-            dataLabels: { enabled: true },
+            dataLabels: {enabled: true},
         });
     };
 
@@ -62,10 +62,10 @@ define(['local_hlai_grading/iksha_charts'], function(IkshaCharts) {
             }],
             xaxis: {
                 categories: data.grade_labels,
-                title: { text: 'Score Range (%)' },
+                title: {text: 'Score Range (%)'},
             },
             colors: [IkshaCharts.colors.success],
-            dataLabels: { enabled: false },
+            dataLabels: {enabled: false},
         });
     };
 
@@ -84,10 +84,10 @@ define(['local_hlai_grading/iksha_charts'], function(IkshaCharts) {
             xaxis: {
                 categories: data.rubric_labels,
                 max: 100,
-                title: { text: 'Average Score (%)' },
+                title: {text: 'Average Score (%)'},
             },
             colors: [IkshaCharts.colors.warning],
-            dataLabels: { enabled: true },
+            dataLabels: {enabled: true},
         });
     };
 
@@ -121,8 +121,10 @@ define(['local_hlai_grading/iksha_charts'], function(IkshaCharts) {
                 if (chartData.rubric_labels) {
                     renderTeacherRubricChart(chartData);
                 }
+                return true;
             }).catch(() => {
                 // Charts failed to load - silent failure.
+                return false;
             });
         } catch (e) {
             // Failed to parse chart data - silent failure.

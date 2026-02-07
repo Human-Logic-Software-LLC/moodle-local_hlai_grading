@@ -36,10 +36,10 @@ define(['local_hlai_grading/apexcharts_loader'], function(ApexLoader) {
             return '';
         }
         if (value >= 1000000) {
-            return (value / 1000000).toFixed(1).replace(/\\.0$/, '') + 'M';
+            return (value / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
         }
         if (value >= 1000) {
-            return (value / 1000).toFixed(1).replace(/\\.0$/, '') + 'K';
+            return (value / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
         }
         return value.toLocaleString();
     };
@@ -64,51 +64,51 @@ define(['local_hlai_grading/apexcharts_loader'], function(ApexLoader) {
     const getBaseConfig = () => ({
         chart: {
             fontFamily: '-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif',
-            toolbar: { show: false },
-            animations: { enabled: true, easing: 'easeinout', speed: 400 },
-            dropShadow: { enabled: false },
+            toolbar: {show: false},
+            animations: {enabled: true, easing: 'easeinout', speed: 400},
+            dropShadow: {enabled: false},
         },
         colors: colors.palette,
-        stroke: { curve: 'smooth', width: 2 },
+        stroke: {curve: 'smooth', width: 2},
         grid: {
             borderColor: '#E2E8F0',
             strokeDashArray: 4,
-            xaxis: { lines: { show: false } },
-            yaxis: { lines: { show: true } },
-            padding: { top: 0, right: 0, bottom: 0, left: 0 },
+            xaxis: {lines: {show: false}},
+            yaxis: {lines: {show: true}},
+            padding: {top: 0, right: 0, bottom: 0, left: 0},
         },
-        dataLabels: { enabled: false },
+        dataLabels: {enabled: false},
         legend: {
             fontFamily: 'inherit',
             fontSize: '12px',
             fontWeight: 500,
-            labels: { colors: '#64748B' },
-            markers: { width: 8, height: 8, radius: 2 },
-            itemMargin: { horizontal: 12, vertical: 4 },
+            labels: {colors: '#64748B'},
+            markers: {width: 8, height: 8, radius: 2},
+            itemMargin: {horizontal: 12, vertical: 4},
         },
         tooltip: {
             theme: 'light',
-            style: { fontSize: '12px', fontFamily: 'inherit' },
-            x: { show: true },
-            marker: { show: true },
+            style: {fontSize: '12px', fontFamily: 'inherit'},
+            x: {show: true},
+            marker: {show: true},
         },
         xaxis: {
             labels: {
-                style: { colors: '#64748B', fontSize: '11px', fontWeight: 500 },
+                style: {colors: '#64748B', fontSize: '11px', fontWeight: 500},
             },
-            axisBorder: { show: false },
-            axisTicks: { show: false },
+            axisBorder: {show: false},
+            axisTicks: {show: false},
         },
         yaxis: {
             labels: {
-                style: { colors: '#64748B', fontSize: '11px', fontWeight: 500 },
+                style: {colors: '#64748B', fontSize: '11px', fontWeight: 500},
                 formatter: val => formatNumber(val),
             },
         },
     });
 
     const areaConfig = options => mergeConfig(getBaseConfig(), {
-        chart: { type: 'area', height: options.height || 240 },
+        chart: {type: 'area', height: options.height || 240},
         fill: {
             type: 'gradient',
             gradient: {
@@ -121,18 +121,18 @@ define(['local_hlai_grading/apexcharts_loader'], function(ApexLoader) {
     }, options);
 
     const barConfig = options => mergeConfig(getBaseConfig(), {
-        chart: { type: 'bar', height: options.height || 240 },
+        chart: {type: 'bar', height: options.height || 240},
         plotOptions: {
             bar: {
                 borderRadius: 4,
                 columnWidth: '60%',
-                dataLabels: { position: 'top' },
+                dataLabels: {position: 'top'},
             },
         },
     }, options);
 
     const barHorizontalConfig = options => mergeConfig(getBaseConfig(), {
-        chart: { type: 'bar', height: options.height || 240 },
+        chart: {type: 'bar', height: options.height || 240},
         plotOptions: {
             bar: {
                 horizontal: true,
@@ -141,8 +141,8 @@ define(['local_hlai_grading/apexcharts_loader'], function(ApexLoader) {
             },
         },
         grid: {
-            xaxis: { lines: { show: true } },
-            yaxis: { lines: { show: false } },
+            xaxis: {lines: {show: true}},
+            yaxis: {lines: {show: false}},
         },
     }, options);
 
@@ -170,7 +170,7 @@ define(['local_hlai_grading/apexcharts_loader'], function(ApexLoader) {
             draft: colors.gray,
         };
         return statuses.map(status => {
-            const key = status.toLowerCase().replace(/\\s+/g, '_');
+            const key = status.toLowerCase().replace(/\s+/g, '_');
             return map[key] || colors.gray;
         });
     };

@@ -97,7 +97,7 @@ define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notificat
     function loadAIStatuses(cmid) {
         var promises = Ajax.call([{
             methodname: 'local_hlai_grading_get_ai_statuses',
-            args: { cmid: cmid }
+            args: {cmid: cmid}
         }]);
 
         promises[0].done(function(response) {

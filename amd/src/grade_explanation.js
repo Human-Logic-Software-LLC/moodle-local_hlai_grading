@@ -207,6 +207,7 @@ define([
                 panel.innerHTML = html;
                 Templates.runTemplateJS(js);
                 attachCriterionHandlers(panel, strings);
+                return true;
             });
     };
 
@@ -218,7 +219,7 @@ define([
         getStrings().then(strings => {
             const card = insertPanel(strings);
             if (!card) {
-                return;
+                return undefined;
             }
 
             const button = card.querySelector('#explain-grade-btn');
@@ -262,7 +263,10 @@ define([
                         loaded = true;
                         return renderExplanation(panel, data, strings);
                     })
-                    .then(showPanel)
+                    .then(() => {
+                        showPanel();
+                        return true;
+                    })
                     .catch(error => {
                         const message = error && error.errorcode === 'no_ai_grade_found'
                             ? strings.explanation_not_available
@@ -273,6 +277,7 @@ define([
                         }
                     });
             });
+            return true;
         }).catch(Notification.exception);
     };
 
