@@ -1,0 +1,300 @@
+<div class="local-hlai-dashboard {{container_class}}">
+    {{#is_admin}}
+    <div class="hlai-page-header">
+        <h2 class="hlai-page-title">Teacher Adoption &amp; Efficiency</h2>
+        <p class="hlai-page-subtitle">Usage snapshot for administrators.</p>
+        {{#is_demo}}
+        <p class="hlai-muted">{{#str}}dashboarddemodata, local_hlai_grading{{/str}}</p>
+        {{/is_demo}}
+    </div>
+
+    <div class="iksha-kpi-grid iksha-kpi-grid--4 mb-4">
+        <div class="iksha-kpi iksha-kpi--primary">
+            <div class="iksha-kpi__icon">
+                <i class="fa fa-clock" aria-hidden="true"></i>
+            </div>
+            <div class="iksha-kpi__content">
+                <span class="iksha-kpi__value">{{stats.hours_saved}} hrs</span>
+                <span class="iksha-kpi__label">Estimated time saved</span>
+            </div>
+        </div>
+        <div class="iksha-kpi iksha-kpi--success">
+            <div class="iksha-kpi__icon">
+                <i class="fa fa-shield" aria-hidden="true"></i>
+            </div>
+            <div class="iksha-kpi__content">
+                <span class="iksha-kpi__value">{{stats.trust_score}}%</span>
+                <span class="iksha-kpi__label">Trust score</span>
+            </div>
+        </div>
+        <div class="iksha-kpi iksha-kpi--info">
+            <div class="iksha-kpi__icon">
+                <i class="fa fa-stream" aria-hidden="true"></i>
+            </div>
+            <div class="iksha-kpi__content">
+                <span class="iksha-kpi__value">{{stats.queue_depth}}</span>
+                <span class="iksha-kpi__label">Active pipeline</span>
+            </div>
+        </div>
+        <div class="iksha-kpi iksha-kpi--danger">
+            <div class="iksha-kpi__icon">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            </div>
+            <div class="iksha-kpi__content">
+                <span class="iksha-kpi__value">{{stats.failures}}</span>
+                <span class="iksha-kpi__label">System errors</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns is-multiline">
+        <div class="column is-8">
+            <div class="iksha-widget">
+                <header class="iksha-widget__header">
+                    <div class="iksha-widget__title-group">
+                        <span class="iksha-widget__icon iksha-widget__icon--primary">
+                            <i class="fa fa-chart-area" aria-hidden="true"></i>
+                        </span>
+                        <h3 class="iksha-widget__title">Global usage trends (7 days)</h3>
+                    </div>
+                </header>
+                <div class="iksha-widget__body">
+                    <div id="admin-activity-chart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="column is-4">
+            <div class="iksha-widget">
+                <header class="iksha-widget__header">
+                    <div class="iksha-widget__title-group">
+                        <span class="iksha-widget__icon iksha-widget__icon--info">
+                            <i class="fa fa-layer-group" aria-hidden="true"></i>
+                        </span>
+                        <h3 class="iksha-widget__title">Top active courses</h3>
+                    </div>
+                </header>
+                <div class="iksha-widget__body">
+                    <div id="admin-top-courses-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns is-multiline mt-4">
+        <div class="column is-12">
+            <div class="iksha-widget">
+                <header class="iksha-widget__header">
+                    <div class="iksha-widget__title-group">
+                        <span class="iksha-widget__icon iksha-widget__icon--danger">
+                            <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                        </span>
+                        <h3 class="iksha-widget__title">{{#str}}dashboarderrorsheading, local_hlai_grading{{/str}}</h3>
+                    </div>
+                </header>
+                <div class="iksha-widget__body">
+                    {{#error_logs.0}}
+                    <div class="iksha-table-wrapper">
+                        <table class="iksha-table">
+                            <thead>
+                                <tr>
+                                    <th>{{#str}}dashboarderrorstime, local_hlai_grading{{/str}}</th>
+                                    <th>{{#str}}dashboarderrorsqueue, local_hlai_grading{{/str}}</th>
+                                    <th>{{#str}}dashboarderrorsstatus, local_hlai_grading{{/str}}</th>
+                                    <th>{{#str}}dashboarderrorsmessage, local_hlai_grading{{/str}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#error_logs}}
+                                <tr>
+                                    <td class="iksha-table__meta">{{time}}</td>
+                                    <td class="iksha-table__meta">{{queueid_display}}</td>
+                                    <td>
+                                        <span class="iksha-badge iksha-badge--sm {{status_class}}">
+                                            {{status}}
+                                        </span>
+                                    </td>
+                                    <td>{{message}}</td>
+                                </tr>
+                                {{/error_logs}}
+                            </tbody>
+                        </table>
+                    </div>
+                    {{/error_logs.0}}
+                    {{^error_logs.0}}
+                    <p class="hlai-muted mb-0">{{#str}}dashboarderrorsempty, local_hlai_grading{{/str}}</p>
+                    {{/error_logs.0}}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/is_admin}}
+
+    {{#is_teacher}}
+    <div class="hlai-page-header">
+        <h2 class="hlai-page-title">Class Performance Metrics</h2>
+        <p class="hlai-page-subtitle">Track grading volume, distribution, and focus areas.</p>
+        {{#is_demo}}
+        <p class="hlai-muted">{{#str}}dashboarddemodata, local_hlai_grading{{/str}}</p>
+        {{/is_demo}}
+    </div>
+
+    <div class="iksha-kpi-grid iksha-kpi-grid--3 mb-4">
+        <div class="iksha-kpi iksha-kpi--primary">
+            <div class="iksha-kpi__icon">
+                <i class="fa fa-chart-line" aria-hidden="true"></i>
+            </div>
+            <div class="iksha-kpi__content">
+                <span class="iksha-kpi__value">{{stats.average_score}}%</span>
+                <span class="iksha-kpi__label">Class average</span>
+            </div>
+        </div>
+        <div class="iksha-kpi iksha-kpi--info">
+            <div class="iksha-kpi__icon">
+                <i class="fa fa-check-circle" aria-hidden="true"></i>
+            </div>
+            <div class="iksha-kpi__content">
+                <span class="iksha-kpi__value">{{stats.graded_count}}</span>
+                <span class="iksha-kpi__label">Assignments processed</span>
+            </div>
+        </div>
+        <div class="iksha-kpi iksha-kpi--warning">
+            <div class="iksha-kpi__icon">
+                <i class="fa fa-hourglass-half" aria-hidden="true"></i>
+            </div>
+            <div class="iksha-kpi__content">
+                <span class="iksha-kpi__value">{{stats.queue_count}}</span>
+                <span class="iksha-kpi__label">Pending review</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns is-multiline">
+        <div class="column is-6">
+            <div class="iksha-widget">
+                <header class="iksha-widget__header">
+                    <div class="iksha-widget__title-group">
+                        <span class="iksha-widget__icon iksha-widget__icon--success">
+                            <i class="fa fa-chart-bar" aria-hidden="true"></i>
+                        </span>
+                        <h3 class="iksha-widget__title">Grade distribution</h3>
+                    </div>
+                </header>
+                <div class="iksha-widget__body">
+                    <div id="teacher-grade-dist-chart"></div>
+                </div>
+            </div>
+        </div>
+        <div class="column is-6">
+            <div class="iksha-widget">
+                <header class="iksha-widget__header">
+                    <div class="iksha-widget__title-group">
+                        <span class="iksha-widget__icon iksha-widget__icon--warning">
+                            <i class="fa fa-clipboard-list" aria-hidden="true"></i>
+                        </span>
+                        <h3 class="iksha-widget__title">Lowest rubric criteria</h3>
+                    </div>
+                </header>
+                <div class="iksha-widget__body">
+                    <div id="teacher-rubric-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="columns is-multiline mt-4">
+        <div class="column is-6">
+            <div class="iksha-widget">
+                <header class="iksha-widget__header">
+                    <div class="iksha-widget__title-group">
+                        <span class="iksha-widget__icon iksha-widget__icon--danger">
+                            <i class="fa fa-user-times" aria-hidden="true"></i>
+                        </span>
+                        <h3 class="iksha-widget__title">At-risk students</h3>
+                    </div>
+                </header>
+                {{#at_risk_students.0}}
+                <div class="iksha-widget__body">
+                    <div class="iksha-table-wrapper">
+                        <table class="iksha-table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Assignment</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#at_risk_students}}
+                                <tr>
+                                    <td>{{student}}</td>
+                                    <td>{{task}}</td>
+                                    <td>
+                                        <span class="iksha-badge iksha-badge--danger iksha-badge--sm">
+                                            <span class="iksha-badge__dot"></span>
+                                            {{score}}
+                                        </span>
+                                    </td>
+                                </tr>
+                                {{/at_risk_students}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                {{/at_risk_students.0}}
+                {{^at_risk_students.0}}
+                <div class="iksha-widget__body">
+                    <p class="hlai-muted mb-0">No at-risk students in the latest results.</p>
+                </div>
+                {{/at_risk_students.0}}
+            </div>
+        </div>
+        <div class="column is-6">
+            <div class="iksha-widget">
+                <header class="iksha-widget__header">
+                    <div class="iksha-widget__title-group">
+                        <span class="iksha-widget__icon iksha-widget__icon--primary">
+                            <i class="fa fa-comment-dots" aria-hidden="true"></i>
+                        </span>
+                        <h3 class="iksha-widget__title">Recent AI feedback</h3>
+                    </div>
+                </header>
+                <div class="iksha-widget__body">
+                    <div class="iksha-table-wrapper">
+                        <table class="iksha-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Module</th>
+                                    <th>Grade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#recent_items}}
+                                <tr>
+                                    <td class="iksha-table__meta">{{date}}</td>
+                                    <td>{{module}}</td>
+                                    <td>{{grade}}</td>
+                                </tr>
+                                {{/recent_items}}
+                                {{^recent_items}}
+                                <tr>
+                                    <td colspan="3" class="iksha-table__meta">No recent activity.</td>
+                                </tr>
+                                {{/recent_items}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {{/is_teacher}}
+</div>
+
+<div id="hlai-dashboard-data" data-chart="{{chart_data_json}}" style="display:none;"></div>
+
+{{#js}}
+require(['local_hlai_grading/dashboard'], function(Dashboard) {
+    Dashboard.init();
+});
+{{/js}}

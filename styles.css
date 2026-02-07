@@ -1,0 +1,1654 @@
+/* =========================================
+   Iksha Design Tokens (Scoped to plugin UI)
+   ========================================= */
+:where(
+    .local-hlai-iksha,
+    .iksha-widget,
+    .iksha-kpi,
+    .iksha-badge,
+    .iksha-table,
+    .iksha-data-list,
+    .iksha-section,
+    .iksha-progress,
+    .ai-grading-banner,
+    .ai-grading-return-banner,
+    .ai-grade-explain-card,
+    .ai-rubric-preview-card,
+    .ai-quiz-summary-card,
+    .ai-grading-review,
+    .ai-banner
+) {
+    --iksha-primary: #3B82F6;
+    --iksha-primary-light: #EFF6FF;
+    --iksha-primary-dark: #1D4ED8;
+
+    --iksha-success: #10B981;
+    --iksha-success-light: #ECFDF5;
+    --iksha-success-dark: #059669;
+
+    --iksha-warning: #F59E0B;
+    --iksha-warning-light: #FFFBEB;
+    --iksha-warning-dark: #D97706;
+
+    --iksha-danger: #EF4444;
+    --iksha-danger-light: #FEF2F2;
+    --iksha-danger-dark: #DC2626;
+
+    --iksha-info: #06B6D4;
+    --iksha-info-light: #ECFEFF;
+    --iksha-info-dark: #0891B2;
+
+    --iksha-gray-50: #F8FAFC;
+    --iksha-gray-100: #F1F5F9;
+    --iksha-gray-200: #E2E8F0;
+    --iksha-gray-300: #CBD5E1;
+    --iksha-gray-400: #94A3B8;
+    --iksha-gray-500: #64748B;
+    --iksha-gray-600: #475569;
+    --iksha-gray-700: #334155;
+    --iksha-gray-800: #1E293B;
+    --iksha-gray-900: #0F172A;
+
+    --iksha-chart-1: #3B82F6;
+    --iksha-chart-2: #10B981;
+    --iksha-chart-3: #F59E0B;
+    --iksha-chart-4: #EF4444;
+    --iksha-chart-5: #8B5CF6;
+    --iksha-chart-6: #EC4899;
+    --iksha-chart-7: #06B6D4;
+    --iksha-chart-8: #F97316;
+    --iksha-chart-9: #6366F1;
+    --iksha-chart-10: #14B8A6;
+
+    --iksha-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --iksha-font-mono: "SF Mono", "Monaco", "Inconsolata", "Roboto Mono", monospace;
+
+    --iksha-text-xs: 0.75rem;
+    --iksha-text-sm: 0.8125rem;
+    --iksha-text-base: 0.875rem;
+    --iksha-text-lg: 1rem;
+    --iksha-text-xl: 1.125rem;
+    --iksha-text-2xl: 1.5rem;
+    --iksha-text-3xl: 1.875rem;
+    --iksha-text-4xl: 2.25rem;
+
+    --iksha-space-1: 0.25rem;
+    --iksha-space-2: 0.5rem;
+    --iksha-space-3: 0.75rem;
+    --iksha-space-4: 1rem;
+    --iksha-space-5: 1.25rem;
+    --iksha-space-6: 1.5rem;
+    --iksha-space-8: 2rem;
+
+    --iksha-radius-sm: 4px;
+    --iksha-radius-md: 6px;
+    --iksha-radius-lg: 8px;
+    --iksha-radius-xl: 12px;
+    --iksha-radius-full: 9999px;
+
+    --iksha-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --iksha-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --iksha-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+    --iksha-transition-fast: 150ms ease;
+    --iksha-transition-base: 200ms ease;
+    --iksha-transition-slow: 300ms ease;
+}
+
+/* =========================================
+   Base Layout (Scoped)
+   ========================================= */
+.local-hlai-iksha {
+    color: var(--iksha-gray-700);
+    font-family: var(--iksha-font-family);
+    font-size: var(--iksha-text-base);
+    position: relative;
+}
+
+.local-hlai-iksha::after {
+    content: '';
+    display: block;
+    clear: both;
+}
+
+body.path-local-hlai_grading #page-footer {
+    clear: both;
+    margin-top: var(--iksha-space-6);
+}
+
+body.path-local-hlai_grading #page-footer .performanceinfo,
+body.path-local-hlai_grading #page-footer .purgecaches {
+    margin-top: var(--iksha-space-3);
+}
+
+.local-hlai-iksha h1,
+.local-hlai-iksha h2,
+.local-hlai-iksha h3,
+.local-hlai-iksha h4,
+.local-hlai-iksha h5,
+.local-hlai-iksha h6 {
+    color: var(--iksha-gray-900);
+    font-weight: 600;
+}
+
+.local-hlai-iksha a {
+    color: var(--iksha-primary);
+    text-decoration: none;
+}
+
+.local-hlai-iksha a:hover {
+    color: var(--iksha-primary-dark);
+}
+
+.local-hlai-iksha .hlai-page-header {
+    margin-bottom: var(--iksha-space-5);
+}
+
+.local-hlai-iksha .hlai-page-header--split {
+    align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+    gap: var(--iksha-space-4);
+}
+
+.local-hlai-iksha .hlai-page-header__text {
+    min-width: 0;
+}
+
+.local-hlai-iksha .hlai-page-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--iksha-space-2);
+}
+
+.local-hlai-iksha .hlai-page-title {
+    font-size: var(--iksha-text-2xl);
+    font-weight: 700;
+    margin-bottom: var(--iksha-space-2);
+}
+
+.local-hlai-iksha .hlai-page-subtitle {
+    color: var(--iksha-gray-500);
+    font-size: var(--iksha-text-sm);
+    margin: 0;
+}
+
+.local-hlai-iksha .hlai-muted {
+    color: var(--iksha-gray-500);
+}
+
+@media screen and (max-width: 768px) {
+    .local-hlai-iksha .hlai-page-header--split {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* =========================================
+   Bulma Layout Shim (Scoped)
+   ========================================= */
+.local-hlai-iksha .columns {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -0.75rem;
+    margin-right: -0.75rem;
+    margin-top: -0.75rem;
+}
+
+.local-hlai-iksha .columns.is-vcentered {
+    align-items: center;
+}
+
+.local-hlai-iksha .column {
+    display: block;
+    flex: 1 1 0;
+    padding: 0.75rem;
+}
+
+.local-hlai-iksha .column.is-3 {
+    flex: none;
+    width: 25%;
+}
+
+.local-hlai-iksha .column.is-4 {
+    flex: none;
+    width: 33.3333%;
+}
+
+.local-hlai-iksha .column.is-5 {
+    flex: none;
+    width: 41.6667%;
+}
+
+.local-hlai-iksha .column.is-6 {
+    flex: none;
+    width: 50%;
+}
+
+.local-hlai-iksha .column.is-7 {
+    flex: none;
+    width: 58.3333%;
+}
+
+.local-hlai-iksha .column.is-8 {
+    flex: none;
+    width: 66.6667%;
+}
+
+.local-hlai-iksha .column.is-9 {
+    flex: none;
+    width: 75%;
+}
+
+.local-hlai-iksha .column.is-12 {
+    flex: none;
+    width: 100%;
+}
+
+.local-hlai-iksha .column.is-offset-3 {
+    margin-left: 25%;
+}
+
+/* =========================================
+   Bulma Tabs (Scoped)
+   ========================================= */
+.local-hlai-iksha .tabs {
+    border-bottom: 1px solid var(--iksha-gray-200);
+    margin-bottom: var(--iksha-space-4);
+}
+
+.local-hlai-iksha .tabs ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--iksha-space-2);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.local-hlai-iksha .tabs li a {
+    display: block;
+    padding: var(--iksha-space-2) var(--iksha-space-4);
+    border-bottom: 2px solid transparent;
+    color: var(--iksha-gray-500);
+    font-size: var(--iksha-text-sm);
+    font-weight: 600;
+}
+
+.local-hlai-iksha .tabs li a:hover {
+    color: var(--iksha-gray-700);
+}
+
+.local-hlai-iksha .tabs li.is-active a {
+    color: var(--iksha-primary);
+    border-bottom-color: var(--iksha-primary);
+}
+
+/* =========================================
+   Buttons (Bulma + Moodle, Scoped)
+   ========================================= */
+.local-hlai-iksha .button {
+    align-items: center;
+    background: #fff;
+    border: 1px solid var(--iksha-gray-200);
+    border-radius: var(--iksha-radius-md);
+    color: var(--iksha-gray-700);
+    cursor: pointer;
+    display: inline-flex;
+    font-size: var(--iksha-text-sm);
+    font-weight: 600;
+    gap: 0.35rem;
+    justify-content: center;
+    padding: 0.5rem 0.9rem;
+    transition: all var(--iksha-transition-fast);
+}
+
+.local-hlai-iksha .button:hover {
+    border-color: var(--iksha-gray-300);
+    color: var(--iksha-gray-800);
+}
+
+.local-hlai-iksha .button.is-primary {
+    background: var(--iksha-primary);
+    border-color: var(--iksha-primary);
+    color: #fff;
+}
+
+.local-hlai-iksha .button.is-primary:hover {
+    background: var(--iksha-primary-dark);
+    border-color: var(--iksha-primary-dark);
+}
+
+.local-hlai-iksha .button.is-info {
+    background: var(--iksha-info);
+    border-color: var(--iksha-info);
+    color: #fff;
+}
+
+.local-hlai-iksha .button.is-warning {
+    background: var(--iksha-warning);
+    border-color: var(--iksha-warning);
+    color: #fff;
+}
+
+.local-hlai-iksha .button.is-danger {
+    background: var(--iksha-danger);
+    border-color: var(--iksha-danger);
+    color: #fff;
+}
+
+.local-hlai-iksha .button.is-light {
+    background: var(--iksha-gray-100);
+    border-color: var(--iksha-gray-200);
+    color: var(--iksha-gray-700);
+}
+
+.local-hlai-iksha .button.is-small {
+    font-size: var(--iksha-text-xs);
+    padding: 0.35rem 0.7rem;
+}
+
+.local-hlai-iksha .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--iksha-space-2);
+}
+
+.local-hlai-iksha .btn,
+.ai-grading-banner .btn,
+.ai-grading-return-banner .btn,
+.ai-grading-review .btn,
+.ai-banner .btn,
+.ai-status-cell .btn {
+    align-items: center;
+    border: 1px solid transparent;
+    border-radius: var(--iksha-radius-md);
+    color: #fff;
+    cursor: pointer;
+    display: inline-flex;
+    font-size: var(--iksha-text-sm);
+    font-weight: 600;
+    gap: 0.35rem;
+    justify-content: center;
+    padding: 0.45rem 0.85rem;
+    transition: all var(--iksha-transition-fast);
+}
+
+.local-hlai-iksha .btn-sm,
+.ai-grading-banner .btn-sm,
+.ai-grading-review .btn-sm,
+.ai-status-cell .btn-sm {
+    font-size: var(--iksha-text-xs);
+    padding: 0.3rem 0.7rem;
+}
+
+.local-hlai-iksha .btn-primary,
+.ai-grading-banner .btn-primary,
+.ai-grading-review .btn-primary,
+.ai-status-cell .btn-primary {
+    background: var(--iksha-primary);
+    border-color: var(--iksha-primary);
+}
+
+.local-hlai-iksha .btn-primary:hover,
+.ai-grading-banner .btn-primary:hover,
+.ai-grading-review .btn-primary:hover,
+.ai-status-cell .btn-primary:hover {
+    background: var(--iksha-primary-dark);
+    border-color: var(--iksha-primary-dark);
+}
+
+.local-hlai-iksha .btn-secondary,
+.ai-grading-banner .btn-secondary,
+.ai-grading-review .btn-secondary,
+.ai-status-cell .btn-secondary {
+    background: var(--iksha-gray-500);
+    border-color: var(--iksha-gray-500);
+}
+
+.local-hlai-iksha .btn-outline-secondary,
+.ai-grading-review .btn-outline-secondary,
+.ai-status-cell .btn-outline-secondary {
+    background: transparent;
+    border-color: var(--iksha-gray-300);
+    color: var(--iksha-gray-600);
+}
+
+.local-hlai-iksha .btn-success,
+.ai-grading-review .btn-success {
+    background: var(--iksha-success);
+    border-color: var(--iksha-success);
+}
+
+.local-hlai-iksha .btn-warning,
+.ai-grading-review .btn-warning {
+    background: var(--iksha-warning);
+    border-color: var(--iksha-warning);
+    color: #fff;
+}
+
+.local-hlai-iksha .btn-danger,
+.ai-grading-review .btn-danger {
+    background: var(--iksha-danger);
+    border-color: var(--iksha-danger);
+}
+
+/* =========================================
+   Iksha Widgets
+   ========================================= */
+.iksha-widget {
+    background: #fff;
+    border: 1px solid var(--iksha-gray-200);
+    border-radius: var(--iksha-radius-lg);
+    box-shadow: var(--iksha-shadow-sm);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    transition: box-shadow var(--iksha-transition-base);
+}
+
+/* Avoid oversized cards on the review & release page (theme can stretch flex items). */
+body#page-local-hlai_grading-view .local-hlai-iksha .iksha-widget {
+    height: auto;
+    min-height: 0;
+}
+
+.iksha-widget:hover {
+    box-shadow: var(--iksha-shadow-md);
+}
+
+.iksha-widget__header {
+    align-items: center;
+    border-bottom: 1px solid var(--iksha-gray-100);
+    display: flex;
+    justify-content: space-between;
+    min-height: 52px;
+    padding: var(--iksha-space-3) var(--iksha-space-4);
+}
+
+.iksha-widget__title-group {
+    align-items: center;
+    display: flex;
+    gap: var(--iksha-space-3);
+    min-width: 0;
+}
+
+.iksha-widget__icon {
+    align-items: center;
+    background: var(--iksha-gray-100);
+    border-radius: var(--iksha-radius-md);
+    color: var(--iksha-gray-500);
+    display: flex;
+    flex-shrink: 0;
+    font-size: 14px;
+    height: 32px;
+    justify-content: center;
+    width: 32px;
+}
+
+.iksha-widget__icon--primary {
+    background: var(--iksha-primary-light);
+    color: var(--iksha-primary);
+}
+
+.iksha-widget__icon--success {
+    background: var(--iksha-success-light);
+    color: var(--iksha-success);
+}
+
+.iksha-widget__icon--warning {
+    background: var(--iksha-warning-light);
+    color: var(--iksha-warning);
+}
+
+.iksha-widget__icon--danger {
+    background: var(--iksha-danger-light);
+    color: var(--iksha-danger);
+}
+
+.iksha-widget__icon--info {
+    background: var(--iksha-info-light);
+    color: var(--iksha-info);
+}
+
+.iksha-widget__title {
+    color: var(--iksha-gray-800);
+    font-size: var(--iksha-text-base);
+    font-weight: 600;
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.iksha-widget__actions {
+    align-items: center;
+    display: flex;
+    gap: var(--iksha-space-1);
+    margin-left: var(--iksha-space-2);
+}
+
+.iksha-widget__action {
+    align-items: center;
+    background: transparent;
+    border: none;
+    border-radius: var(--iksha-radius-sm);
+    color: var(--iksha-gray-400);
+    cursor: pointer;
+    display: flex;
+    font-size: 13px;
+    height: 28px;
+    justify-content: center;
+    transition: all var(--iksha-transition-fast);
+    width: 28px;
+}
+
+.iksha-widget__action:hover {
+    background: var(--iksha-gray-100);
+    color: var(--iksha-gray-600);
+}
+
+.iksha-widget__status {
+    align-items: center;
+    display: flex;
+    font-size: var(--iksha-text-xs);
+    font-weight: 500;
+    gap: var(--iksha-space-2);
+    padding: var(--iksha-space-2) var(--iksha-space-4);
+}
+
+.iksha-widget__status--success {
+    background: var(--iksha-success-light);
+    color: var(--iksha-success-dark);
+}
+
+.iksha-widget__status--warning {
+    background: var(--iksha-warning-light);
+    color: var(--iksha-warning-dark);
+}
+
+.iksha-widget__status--danger {
+    background: var(--iksha-danger-light);
+    color: var(--iksha-danger-dark);
+}
+
+.iksha-widget__status--info {
+    background: var(--iksha-info-light);
+    color: var(--iksha-info-dark);
+}
+
+.iksha-widget__status-dot {
+    background: currentColor;
+    border-radius: 50%;
+    height: 6px;
+    width: 6px;
+}
+
+.iksha-widget__body {
+    flex: 1;
+    overflow: auto;
+    padding: var(--iksha-space-4);
+}
+
+.iksha-widget__body--compact {
+    padding: var(--iksha-space-3);
+}
+
+.iksha-widget__body--flush {
+    padding: 0;
+}
+
+.iksha-widget__footer {
+    align-items: center;
+    background: var(--iksha-gray-50);
+    border-top: 1px solid var(--iksha-gray-100);
+    display: flex;
+    justify-content: space-between;
+    padding: var(--iksha-space-3) var(--iksha-space-4);
+}
+
+.iksha-widget__updated {
+    color: var(--iksha-gray-400);
+    font-size: var(--iksha-text-xs);
+}
+
+.iksha-widget__link {
+    color: var(--iksha-primary);
+    font-size: var(--iksha-text-xs);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.iksha-widget__link:hover {
+    color: var(--iksha-primary-dark);
+}
+
+/* =========================================
+   KPI Cards
+   ========================================= */
+.iksha-kpi {
+    align-items: flex-start;
+    background: var(--iksha-gray-50);
+    border-radius: var(--iksha-radius-lg);
+    display: flex;
+    gap: var(--iksha-space-3);
+    padding: var(--iksha-space-4);
+    position: relative;
+}
+
+.iksha-widget__body .iksha-kpi {
+    background: transparent;
+    border: 1px solid var(--iksha-gray-100);
+    padding: var(--iksha-space-3);
+}
+
+.iksha-kpi__icon {
+    align-items: center;
+    background: var(--iksha-gray-200);
+    border-radius: var(--iksha-radius-lg);
+    color: var(--iksha-gray-500);
+    display: flex;
+    flex-shrink: 0;
+    font-size: 18px;
+    height: 44px;
+    justify-content: center;
+    width: 44px;
+}
+
+.iksha-kpi--success .iksha-kpi__icon {
+    background: var(--iksha-success-light);
+    color: var(--iksha-success);
+}
+
+.iksha-kpi--warning .iksha-kpi__icon {
+    background: var(--iksha-warning-light);
+    color: var(--iksha-warning);
+}
+
+.iksha-kpi--danger .iksha-kpi__icon {
+    background: var(--iksha-danger-light);
+    color: var(--iksha-danger);
+}
+
+.iksha-kpi--info .iksha-kpi__icon {
+    background: var(--iksha-info-light);
+    color: var(--iksha-info);
+}
+
+.iksha-kpi--primary .iksha-kpi__icon {
+    background: var(--iksha-primary-light);
+    color: var(--iksha-primary);
+}
+
+.iksha-kpi__content {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.iksha-kpi__value {
+    color: var(--iksha-gray-800);
+    font-family: var(--iksha-font-mono);
+    font-size: var(--iksha-text-2xl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+.iksha-kpi__label {
+    color: var(--iksha-gray-500);
+    font-size: var(--iksha-text-sm);
+    margin-top: 2px;
+}
+
+.iksha-kpi__trend {
+    align-items: center;
+    border-radius: var(--iksha-radius-full);
+    display: flex;
+    font-size: var(--iksha-text-xs);
+    font-weight: 600;
+    gap: 4px;
+    margin-left: auto;
+    padding: 2px 8px;
+}
+
+.iksha-kpi__trend--up {
+    background: var(--iksha-success-light);
+    color: var(--iksha-success-dark);
+}
+
+.iksha-kpi__trend--down {
+    background: var(--iksha-danger-light);
+    color: var(--iksha-danger-dark);
+}
+
+.iksha-kpi__trend--neutral {
+    background: var(--iksha-gray-100);
+    color: var(--iksha-gray-500);
+}
+
+.iksha-kpi-grid {
+    display: grid;
+    gap: var(--iksha-space-3);
+}
+
+.iksha-kpi-grid--2 {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.iksha-kpi-grid--3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.iksha-kpi-grid--4 {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+/* =========================================
+   Badges
+   ========================================= */
+.iksha-badge {
+    align-items: center;
+    border-radius: var(--iksha-radius-full);
+    display: inline-flex;
+    font-size: var(--iksha-text-xs);
+    font-weight: 500;
+    gap: 6px;
+    padding: 4px 10px;
+    white-space: nowrap;
+}
+
+.iksha-badge__dot {
+    background: currentColor;
+    border-radius: 50%;
+    height: 6px;
+    width: 6px;
+}
+
+.iksha-badge--success {
+    background: var(--iksha-success-light);
+    color: var(--iksha-success-dark);
+}
+
+.iksha-badge--warning {
+    background: var(--iksha-warning-light);
+    color: var(--iksha-warning-dark);
+}
+
+.iksha-badge--danger {
+    background: var(--iksha-danger-light);
+    color: var(--iksha-danger-dark);
+}
+
+.iksha-badge--info {
+    background: var(--iksha-info-light);
+    color: var(--iksha-info-dark);
+}
+
+.iksha-badge--neutral {
+    background: var(--iksha-gray-100);
+    color: var(--iksha-gray-600);
+}
+
+.iksha-badge--primary {
+    background: var(--iksha-primary-light);
+    color: var(--iksha-primary-dark);
+}
+
+.iksha-badge--sm {
+    font-size: 11px;
+    padding: 2px 8px;
+}
+
+.iksha-badge--sm .iksha-badge__dot {
+    height: 5px;
+    width: 5px;
+}
+
+.iksha-badge--lg {
+    font-size: var(--iksha-text-sm);
+    padding: 6px 14px;
+}
+
+.iksha-badge--lg .iksha-badge__dot {
+    height: 8px;
+    width: 8px;
+}
+
+.local-hlai-iksha .badge,
+.ai-grading-banner .badge,
+.ai-status-cell .badge,
+.ai-grading-review .badge {
+    align-items: center;
+    border-radius: var(--iksha-radius-full);
+    display: inline-flex;
+    font-size: var(--iksha-text-xs);
+    font-weight: 600;
+    gap: 6px;
+    padding: 4px 10px;
+    white-space: nowrap;
+}
+
+.local-hlai-iksha .badge-warning,
+.ai-grading-review .badge-warning,
+.ai-status-cell .badge-warning {
+    background: var(--iksha-warning-light);
+    color: var(--iksha-warning-dark);
+}
+
+.local-hlai-iksha .badge-success,
+.ai-grading-review .badge-success,
+.ai-status-cell .badge-success {
+    background: var(--iksha-success-light);
+    color: var(--iksha-success-dark);
+}
+
+.local-hlai-iksha .badge-danger,
+.ai-grading-review .badge-danger,
+.ai-status-cell .badge-danger {
+    background: var(--iksha-danger-light);
+    color: var(--iksha-danger-dark);
+}
+
+.local-hlai-iksha .badge-info,
+.ai-grading-review .badge-info,
+.ai-status-cell .badge-info {
+    background: var(--iksha-info-light);
+    color: var(--iksha-info-dark);
+}
+
+.local-hlai-iksha .badge-secondary,
+.ai-grading-review .badge-secondary,
+.ai-status-cell .badge-secondary {
+    background: var(--iksha-gray-100);
+    color: var(--iksha-gray-600);
+}
+
+.local-hlai-iksha .badge-light,
+.ai-status-cell .badge-light {
+    background: var(--iksha-gray-100);
+    color: var(--iksha-gray-500);
+}
+
+/* =========================================
+   Tables
+   ========================================= */
+.iksha-table-wrapper {
+    overflow-x: auto;
+}
+
+.iksha-table {
+    border-collapse: collapse;
+    font-size: var(--iksha-text-sm);
+    width: 100%;
+}
+
+.iksha-table th {
+    background: var(--iksha-gray-50);
+    border-bottom: 1px solid var(--iksha-gray-200);
+    color: var(--iksha-gray-500);
+    font-size: var(--iksha-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: var(--iksha-space-3) var(--iksha-space-4);
+    text-align: left;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.iksha-table td {
+    border-bottom: 1px solid var(--iksha-gray-100);
+    color: var(--iksha-gray-700);
+    padding: var(--iksha-space-3) var(--iksha-space-4);
+}
+
+.iksha-table tbody tr:hover {
+    background: var(--iksha-gray-50);
+}
+
+.iksha-table__meta {
+    color: var(--iksha-gray-400);
+    font-size: var(--iksha-text-xs);
+}
+
+.iksha-table__user {
+    align-items: center;
+    display: flex;
+    gap: var(--iksha-space-2);
+}
+
+.iksha-table__avatar {
+    align-items: center;
+    background: var(--iksha-primary-light);
+    border-radius: 50%;
+    color: var(--iksha-primary);
+    display: flex;
+    font-size: 11px;
+    font-weight: 600;
+    height: 28px;
+    justify-content: center;
+    width: 28px;
+}
+
+.aigrading-table,
+.aigrading-table.generaltable {
+    border-collapse: collapse;
+    font-size: var(--iksha-text-sm);
+    width: 100%;
+}
+
+.aigrading-table thead th {
+    background: var(--iksha-gray-50);
+    border-bottom: 1px solid var(--iksha-gray-200);
+    color: var(--iksha-gray-500);
+    font-size: var(--iksha-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    padding: var(--iksha-space-3) var(--iksha-space-4);
+    text-transform: uppercase;
+}
+
+.aigrading-table tbody td {
+    border-bottom: 1px solid var(--iksha-gray-100);
+    padding: var(--iksha-space-3) var(--iksha-space-4);
+    vertical-align: middle;
+}
+
+.aigrading-table tbody tr:hover {
+    background: var(--iksha-gray-50);
+}
+
+/* =========================================
+   Iksha Forms (Scoped)
+   ========================================= */
+.local-hlai-iksha .iksha-form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--iksha-space-3);
+}
+
+.local-hlai-iksha .iksha-form .label {
+    color: var(--iksha-gray-700);
+    font-size: var(--iksha-text-sm);
+    font-weight: 600;
+}
+
+.local-hlai-iksha .iksha-form .input,
+.local-hlai-iksha .iksha-form .textarea,
+.local-hlai-iksha .iksha-form .select select {
+    background: #fff;
+    border: 1px solid var(--iksha-gray-200);
+    border-radius: var(--iksha-radius-md);
+    color: var(--iksha-gray-800);
+    font-size: var(--iksha-text-sm);
+    transition: border-color var(--iksha-transition-fast), box-shadow var(--iksha-transition-fast);
+}
+
+.local-hlai-iksha .iksha-form .input:focus,
+.local-hlai-iksha .iksha-form .textarea:focus,
+.local-hlai-iksha .iksha-form .select select:focus {
+    border-color: var(--iksha-primary);
+    box-shadow: 0 0 0 0.1rem var(--iksha-primary-light);
+    outline: none;
+}
+
+.local-hlai-iksha .iksha-help {
+    color: var(--iksha-gray-500);
+    font-size: var(--iksha-text-xs);
+    margin-top: var(--iksha-space-1);
+}
+
+.local-hlai-iksha .iksha-form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--iksha-space-2);
+    margin-top: var(--iksha-space-2);
+}
+
+.local-hlai-iksha .iksha-inline-meta {
+    color: var(--iksha-gray-400);
+    font-size: var(--iksha-text-xs);
+    margin-bottom: var(--iksha-space-3);
+}
+
+.local-hlai-iksha .iksha-empty {
+    border: 1px dashed var(--iksha-gray-200);
+    border-radius: var(--iksha-radius-lg);
+    color: var(--iksha-gray-500);
+    padding: var(--iksha-space-4);
+    text-align: center;
+}
+
+.local-hlai-iksha .iksha-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--iksha-space-2);
+}
+
+.local-hlai-iksha .iksha-format-example {
+    background: var(--iksha-gray-50);
+    border: 1px dashed var(--iksha-gray-200);
+    border-radius: var(--iksha-radius-md);
+    color: var(--iksha-gray-600);
+    font-family: var(--iksha-font-mono);
+    font-size: var(--iksha-text-xs);
+    padding: var(--iksha-space-2) var(--iksha-space-3);
+}
+
+/* =========================================
+   Data Lists
+   ========================================= */
+.iksha-data-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0;
+}
+
+.iksha-data-list__item {
+    align-items: center;
+    border-bottom: 1px solid var(--iksha-gray-100);
+    display: flex;
+    justify-content: space-between;
+    padding: var(--iksha-space-3) 0;
+}
+
+.iksha-data-list__item:last-child {
+    border-bottom: none;
+}
+
+.iksha-data-list dt {
+    color: var(--iksha-gray-500);
+    font-size: var(--iksha-text-sm);
+}
+
+.iksha-data-list dd {
+    color: var(--iksha-gray-800);
+    font-size: var(--iksha-text-sm);
+    font-weight: 600;
+    margin: 0;
+    text-align: right;
+}
+
+.iksha-data-list__value--success {
+    color: var(--iksha-success);
+}
+
+.iksha-data-list__value--warning {
+    color: var(--iksha-warning);
+}
+
+.iksha-data-list__value--danger {
+    color: var(--iksha-danger);
+}
+
+.iksha-data-list--compact .iksha-data-list__item {
+    padding: var(--iksha-space-2) 0;
+}
+
+.iksha-data-list--horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--iksha-space-4);
+}
+
+.iksha-data-list--horizontal .iksha-data-list__item {
+    align-items: flex-start;
+    border-bottom: none;
+    flex-direction: column;
+    padding: 0;
+}
+
+.iksha-data-list--horizontal dd {
+    text-align: left;
+}
+
+/* =========================================
+   Sections
+   ========================================= */
+.iksha-section {
+    background: var(--iksha-gray-50);
+    border-radius: var(--iksha-radius-md);
+    overflow: hidden;
+}
+
+.iksha-section + .iksha-section {
+    margin-top: var(--iksha-space-3);
+}
+
+.iksha-section__header {
+    align-items: center;
+    background: var(--iksha-gray-100);
+    display: flex;
+    justify-content: space-between;
+    padding: var(--iksha-space-3) var(--iksha-space-4);
+}
+
+.iksha-section__title {
+    color: var(--iksha-gray-700);
+    font-size: var(--iksha-text-sm);
+    font-weight: 600;
+    margin: 0;
+}
+
+.iksha-section__body {
+    padding: var(--iksha-space-3) var(--iksha-space-4);
+}
+
+/* =========================================
+   Progress Bars
+   ========================================= */
+.iksha-progress {
+    align-items: center;
+    display: flex;
+    gap: var(--iksha-space-2);
+    min-width: 100px;
+}
+
+.iksha-progress__bar {
+    background: var(--iksha-gray-200);
+    border-radius: var(--iksha-radius-full);
+    flex: 1;
+    height: 6px;
+    overflow: hidden;
+    position: relative;
+}
+
+.iksha-progress__bar::after {
+    background: var(--iksha-primary);
+    border-radius: var(--iksha-radius-full);
+    content: '';
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: inherit;
+}
+
+.iksha-progress__text {
+    color: var(--iksha-gray-600);
+    font-size: var(--iksha-text-xs);
+    font-weight: 600;
+    min-width: 36px;
+}
+
+/* =========================================
+   AI Grading Banner (Assignment pages)
+   ========================================= */
+.ai-grading-banner-wrapper {
+    margin-top: 4.5rem;
+    margin-bottom: 1rem;
+    pointer-events: none;
+}
+
+.ai-grading-banner {
+    align-items: center;
+    background: linear-gradient(120deg, var(--iksha-primary-light), #fff 55%);
+    border: 1px solid var(--iksha-gray-200);
+    border-left: 4px solid var(--iksha-primary);
+    border-radius: var(--iksha-radius-lg);
+    box-shadow: var(--iksha-shadow-md);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--iksha-space-4);
+    margin-left: calc(var(--drawer-toggle-width, 3.75rem) + 0.5rem);
+    margin-right: 1.5rem;
+    padding: var(--iksha-space-4) var(--iksha-space-5);
+    pointer-events: auto;
+}
+
+.ai-grading-banner__icon {
+    align-items: center;
+    background: #fff;
+    border: 1px solid var(--iksha-gray-200);
+    border-radius: var(--iksha-radius-full);
+    color: var(--iksha-primary);
+    display: inline-flex;
+    font-size: var(--iksha-text-sm);
+    font-weight: 700;
+    height: 44px;
+    justify-content: center;
+    letter-spacing: 0.08em;
+    min-width: 44px;
+    text-transform: uppercase;
+}
+
+.ai-grading-banner__icon-text {
+    display: inline-block;
+    line-height: 1;
+}
+
+.ai-grading-banner__content {
+    flex: 1;
+    min-width: 220px;
+}
+
+.ai-grading-banner h5,
+.ai-grading-banner__title {
+    color: var(--iksha-gray-900);
+    font-size: var(--iksha-text-lg);
+    font-weight: 600;
+    margin-bottom: var(--iksha-space-1);
+}
+
+.ai-grading-banner p,
+.ai-grading-banner__text {
+    color: var(--iksha-gray-600);
+    margin-bottom: 0;
+}
+
+.ai-grading-banner__actions {
+    margin-left: auto;
+}
+
+#page.show-drawer-left .ai-grading-banner-wrapper,
+#theme_boost-drawers-courseindex[data-state="show-drawer-left"] ~ #page .ai-grading-banner-wrapper,
+#theme_boost-drawers-courseindex[data-forceopen="1"] ~ #page .ai-grading-banner-wrapper,
+body.drawer-open-left .ai-grading-banner-wrapper {
+    margin-left: calc(var(--drawer-width, 20rem) + 1rem);
+    margin-right: 1.5rem;
+    max-width: calc(100% - (var(--drawer-width, 20rem) + 2.5rem));
+}
+
+#page.show-drawer-left .ai-grading-banner,
+#theme_boost-drawers-courseindex[data-state="show-drawer-left"] ~ #page .ai-grading-banner,
+#theme_boost-drawers-courseindex[data-forceopen="1"] ~ #page .ai-grading-banner,
+body.drawer-open-left .ai-grading-banner {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+@media (max-width: 720px) {
+    .ai-grading-banner {
+        align-items: flex-start;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .ai-grading-banner__actions {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    .ai-grading-banner__actions .btn {
+        width: 100%;
+    }
+}
+
+.ai-grading-return-banner {
+    background: var(--iksha-warning-light);
+    border: 1px solid var(--iksha-warning-dark);
+    border-radius: var(--iksha-radius-lg);
+    color: var(--iksha-warning-dark);
+    padding: var(--iksha-space-3) var(--iksha-space-4);
+}
+
+/* =========================================
+   AI Summary Banner (Assignment grading summary)
+   ========================================= */
+.ai-banner {
+    background: #fff;
+    border: 1px solid var(--iksha-gray-200);
+    border-left: 4px solid var(--iksha-primary);
+    border-radius: var(--iksha-radius-lg);
+    box-shadow: var(--iksha-shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--iksha-space-2);
+    margin-bottom: var(--iksha-space-5);
+    padding: var(--iksha-space-4) var(--iksha-space-5);
+}
+
+.ai-banner h5 {
+    color: var(--iksha-gray-900);
+    font-size: var(--iksha-text-lg);
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.ai-banner p {
+    color: var(--iksha-gray-600);
+    margin-bottom: 0;
+}
+
+.ai-banner .btn,
+.ai-banner .button {
+    align-self: flex-start;
+}
+
+/* =========================================
+   Review Page (Release)
+   ========================================= */
+.ai-grading-review {
+    background: #fff;
+    border: 1px solid var(--iksha-gray-200);
+    border-radius: var(--iksha-radius-lg);
+    box-shadow: var(--iksha-shadow-sm);
+    padding: var(--iksha-space-6);
+}
+
+.ai-grading-review h3 {
+    border-bottom: 1px solid var(--iksha-gray-100);
+    color: var(--iksha-gray-900);
+    font-size: var(--iksha-text-xl);
+    margin-bottom: var(--iksha-space-4);
+    padding-bottom: var(--iksha-space-2);
+}
+
+.ai-grading-review h4 {
+    color: var(--iksha-gray-700);
+    font-size: var(--iksha-text-sm);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--iksha-space-2);
+    margin-top: var(--iksha-space-4);
+    text-transform: uppercase;
+}
+
+.ai-grading-review .alert {
+    border: 1px solid var(--iksha-gray-200);
+    border-radius: var(--iksha-radius-md);
+    color: var(--iksha-gray-700);
+    font-size: var(--iksha-text-sm);
+    line-height: 1.6;
+    padding: var(--iksha-space-4);
+}
+
+.ai-grading-review .alert-secondary {
+    background: var(--iksha-gray-50);
+    font-family: var(--iksha-font-mono);
+}
+
+.ai-grading-review .alert-info {
+    background: var(--iksha-info-light);
+    border-color: var(--iksha-info-light);
+    color: var(--iksha-info-dark);
+}
+
+.ai-grading-review .alert-light {
+    background: #fff;
+    border-color: var(--iksha-gray-200);
+}
+
+.ai-grading-review ul.list-unstyled li {
+    background: var(--iksha-gray-50);
+    border-radius: var(--iksha-radius-sm);
+    font-size: var(--iksha-text-sm);
+    margin-bottom: var(--iksha-space-2);
+    padding: var(--iksha-space-2) var(--iksha-space-3);
+}
+
+.ai-grading-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--iksha-space-2);
+    margin-top: var(--iksha-space-4);
+}
+
+/* =========================================
+   AI Explainability Card (Student + Quiz Summary)
+   ========================================= */
+.ai-grade-explain-card {
+    background: #fff;
+    border: 1px solid var(--iksha-gray-200);
+    border-radius: var(--iksha-radius-lg);
+    box-shadow: var(--iksha-shadow-sm);
+}
+
+.ai-grade-explain-card .card-title {
+    margin-bottom: var(--iksha-space-1);
+}
+
+.ai-explain-summary {
+    border-bottom: 1px solid var(--iksha-gray-100);
+    margin-bottom: var(--iksha-space-4);
+    padding-bottom: var(--iksha-space-4);
+}
+
+.ai-explain-grade {
+    align-items: baseline;
+    color: var(--iksha-gray-900);
+    display: flex;
+    font-size: var(--iksha-text-3xl);
+    font-weight: 700;
+    gap: var(--iksha-space-2);
+}
+
+.ai-explain-grade-max {
+    color: var(--iksha-gray-500);
+    font-size: var(--iksha-text-lg);
+}
+
+.ai-explain-confidence {
+    color: var(--iksha-gray-500);
+    font-size: var(--iksha-text-sm);
+    margin-top: var(--iksha-space-1);
+}
+
+.ai-explain-section + .ai-explain-section {
+    margin-top: var(--iksha-space-5);
+}
+
+.ai-explain-list {
+    margin: 0;
+    padding-left: 1.2rem;
+}
+
+.ai-explain-list li {
+    margin-bottom: 0.35rem;
+}
+
+.ai-explain-section-header {
+    align-items: center;
+    display: flex;
+    gap: var(--iksha-space-3);
+    justify-content: space-between;
+}
+
+.ai-explain-criteria .ai-criterion {
+    border: 1px solid var(--iksha-gray-100);
+    border-radius: var(--iksha-radius-lg);
+    margin-bottom: var(--iksha-space-3);
+    padding: var(--iksha-space-4);
+}
+
+.ai-criterion-header {
+    align-items: center;
+    display: flex;
+    gap: var(--iksha-space-3);
+    justify-content: space-between;
+}
+
+.ai-criterion-name {
+    color: var(--iksha-gray-900);
+    font-weight: 600;
+}
+
+.ai-criterion-score {
+    color: var(--iksha-primary);
+    font-weight: 600;
+}
+
+.criterion-reasoning {
+    border-top: 1px solid var(--iksha-gray-100);
+    display: none;
+    margin-top: var(--iksha-space-3);
+    padding-top: var(--iksha-space-3);
+}
+
+.criterion-reasoning p:last-child {
+    margin-bottom: 0;
+}
+
+.ai-explain-examples {
+    display: grid;
+    gap: var(--iksha-space-3);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.ai-example {
+    background: var(--iksha-gray-50);
+    border: 1px solid var(--iksha-gray-200);
+    border-radius: var(--iksha-radius-lg);
+    padding: var(--iksha-space-4);
+}
+
+.ai-example blockquote {
+    color: var(--iksha-gray-600);
+    font-style: italic;
+    margin: var(--iksha-space-3) 0;
+}
+
+.ai-example-label {
+    font-weight: 600;
+}
+
+.ai-example.strength .ai-example-label {
+    color: var(--iksha-success);
+}
+
+.ai-example.improvement .ai-example-label {
+    color: var(--iksha-warning);
+}
+
+.ai-explain-loading {
+    align-items: center;
+    color: var(--iksha-gray-500);
+    display: flex;
+    font-size: var(--iksha-text-sm);
+    gap: var(--iksha-space-2);
+}
+
+.ai-explain-section h5 {
+    color: var(--iksha-gray-700);
+    font-size: var(--iksha-text-xs);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--iksha-space-2);
+    text-transform: uppercase;
+}
+
+.ai-explain-grade {
+    color: var(--iksha-primary);
+    font-family: var(--iksha-font-mono);
+}
+
+/* =========================================
+   Rubric Preview
+   ========================================= */
+.ai-rubric-preview-card {
+    background: #fff !important;
+    border: 1px solid var(--iksha-gray-200) !important;
+    border-radius: var(--iksha-radius-lg) !important;
+    box-shadow: var(--iksha-shadow-sm) !important;
+    width: 100%;
+}
+
+.ai-rubric-preview-card .card-header {
+    background: var(--iksha-gray-50);
+    border-bottom: 1px solid var(--iksha-gray-100);
+    color: var(--iksha-gray-800);
+    font-size: var(--iksha-text-base);
+    font-weight: 600;
+    padding: var(--iksha-space-3) var(--iksha-space-4);
+}
+
+.ai-rubric-preview-card .card-body {
+    padding: var(--iksha-space-4);
+}
+
+.ai-rubric-widget {
+    display: contents;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+}
+
+.ai-rubric-widget table.criteria {
+    min-width: 100%;
+    width: 100%;
+}
+
+.ai-rubric-preview-item {
+    border-bottom: 1px solid var(--iksha-gray-100);
+    padding-bottom: var(--iksha-space-5);
+}
+
+.ai-rubric-preview-item:last-child {
+    border-bottom: none;
+}
+
+.ai-criterion-feedback-list {
+    background: var(--iksha-gray-50);
+    border-radius: var(--iksha-radius-md);
+    padding: var(--iksha-space-3);
+}
+
+.ai-criterion-feedback + .ai-criterion-feedback {
+    margin-top: var(--iksha-space-2);
+}
+
+.ai-criterion-feedback {
+    font-size: var(--iksha-text-sm);
+    line-height: 1.4;
+}
+
+/* =========================================
+   Responsive Adjustments
+   ========================================= */
+@media (max-width: 768px) {
+    .local-hlai-iksha .column.is-3,
+    .local-hlai-iksha .column.is-4,
+    .local-hlai-iksha .column.is-5,
+    .local-hlai-iksha .column.is-6,
+    .local-hlai-iksha .column.is-7,
+    .local-hlai-iksha .column.is-8,
+    .local-hlai-iksha .column.is-9 {
+        width: 100%;
+    }
+
+    .local-hlai-iksha .column.is-offset-3 {
+        margin-left: 0;
+    }
+
+    .iksha-kpi-grid--3,
+    .iksha-kpi-grid--4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 480px) {
+    .iksha-kpi-grid--2,
+    .iksha-kpi-grid--3,
+    .iksha-kpi-grid--4 {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767px) {
+    .ai-grading-banner-wrapper {
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        margin-left: 0;
+        margin-right: 0;
+        max-width: 100%;
+    }
+
+    .ai-grading-banner {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    #page.show-drawer-left .ai-grading-banner-wrapper,
+    #theme_boost-drawers-courseindex[data-state="show-drawer-left"] ~ #page .ai-grading-banner-wrapper,
+    #theme_boost-drawers-courseindex[data-forceopen="1"] ~ #page .ai-grading-banner-wrapper,
+    body.drawer-open-left .ai-grading-banner-wrapper {
+        margin-left: 0;
+        margin-right: 0;
+        max-width: 100%;
+    }
+}

@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/hlai_grading/db" VERSION="2025120104" COMMENT="AI grading tables" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <TABLES>
+        <TABLE NAME="hlai_grading_queue" COMMENT="Submissions waiting for AI grading">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="course module id (assign, quiz)"/>
+                <FIELD NAME="modulename" TYPE="char" LENGTH="50" NOTNULL="false" COMMENT="assign, quiz"/>
+                <FIELD NAME="instanceid" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="assignment or quiz instance id"/>
+                <FIELD NAME="submissionid" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="submission id for assignments"/>
+                <FIELD NAME="attemptid" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="attempt id for quizzes"/>
+                <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="question id for quiz essays"/>
+                <FIELD NAME="component" TYPE="char" LENGTH="100" NOTNULL="true" COMMENT="mod_assign, mod_quiz..."/>
+                <FIELD NAME="eventname" TYPE="char" LENGTH="255" NOTNULL="true"/>
+                <FIELD NAME="payload" TYPE="text" NOTNULL="false" COMMENT="json of attempt/submission ids"/>
+                <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="pending"/>
+                <FIELD NAME="retries" TYPE="int" LENGTH="4" NOTNULL="true" DEFAULT="0"/>
+                <FIELD NAME="nextrun" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="timecompleted" TYPE="int" LENGTH="10" NOTNULL="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+        </TABLE>
+        <TABLE NAME="hlai_grading_results" COMMENT="AI grading results stored as drafts first">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="queueid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="modulename" TYPE="char" LENGTH="50" NOTNULL="true"/>
+                <FIELD NAME="instanceid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="submissionid" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="attemptid" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="questionid" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="slot" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="grade" TYPE="number" LENGTH="10" DECIMALS="5" NOTNULL="false"/>
+                <FIELD NAME="maxgrade" TYPE="number" LENGTH="10" DECIMALS="5" NOTNULL="false"/>
+                <FIELD NAME="grademethod" TYPE="char" LENGTH="20" NOTNULL="false"/>
+                <FIELD NAME="reasoning" TYPE="text" NOTNULL="false"/>
+                <FIELD NAME="rubric_analysis" TYPE="text" NOTNULL="false"/>
+                <FIELD NAME="strengths_json" TYPE="text" NOTNULL="false"/>
+                <FIELD NAME="improvements_json" TYPE="text" NOTNULL="false"/>
+                <FIELD NAME="examples_json" TYPE="text" NOTNULL="false"/>
+                <FIELD NAME="confidence" TYPE="number" LENGTH="5" DECIMALS="2" NOTNULL="false"/>
+                <FIELD NAME="model" TYPE="char" LENGTH="50" NOTNULL="false"/>
+                <FIELD NAME="quality" TYPE="char" LENGTH="20" NOTNULL="false"/>
+                <FIELD NAME="tokens_used" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="prompttokens" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="completiontokens" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="processing_time" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="rubric_version_id" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="draft"/>
+                <FIELD NAME="reviewed" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0"/>
+                <FIELD NAME="reviewer_id" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="timereviewed" TYPE="int" LENGTH="10" NOTNULL="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="queueidx" UNIQUE="false" FIELDS="queueid"/>
+                <INDEX NAME="useridx" UNIQUE="false" FIELDS="userid"/>
+                <INDEX NAME="statusidx" UNIQUE="false" FIELDS="status"/>
+            </INDEXES>
+        </TABLE>
+        <TABLE NAME="hlai_grading_rubric_scores" COMMENT="Per-criterion AI rubric scores">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="resultid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="criterionid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="criterionname" TYPE="char" LENGTH="255" NOTNULL="false"/>
+                <FIELD NAME="levelid" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="levelname" TYPE="char" LENGTH="255" NOTNULL="false"/>
+                <FIELD NAME="score" TYPE="number" LENGTH="10" DECIMALS="5" NOTNULL="false"/>
+                <FIELD NAME="maxscore" TYPE="number" LENGTH="10" DECIMALS="5" NOTNULL="false"/>
+                <FIELD NAME="reasoning" TYPE="text" NOTNULL="false"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="resultidx" UNIQUE="false" FIELDS="resultid"/>
+            </INDEXES>
+        </TABLE>
+        <TABLE NAME="hlai_grading_log" COMMENT="Audit trail for AI grading actions">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="queueid" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="resultid" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="action" TYPE="char" LENGTH="50" NOTNULL="true"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false"/>
+                <FIELD NAME="details" TYPE="text" NOTNULL="false"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="queueidx" UNIQUE="false" FIELDS="queueid"/>
+                <INDEX NAME="resultidx" UNIQUE="false" FIELDS="resultid"/>
+                <INDEX NAME="actionidx" UNIQUE="false" FIELDS="action"/>
+            </INDEXES>
+        </TABLE>
+        <TABLE NAME="hlai_grading_config" COMMENT="Plugin-wide config">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="name" TYPE="char" LENGTH="100" NOTNULL="true"/>
+                <FIELD NAME="value" TYPE="text" NOTNULL="false"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="nameuniq" UNIQUE="true" FIELDS="name"/>
+            </INDEXES>
+        </TABLE>
+        <TABLE NAME="hlai_grading_act_settings" COMMENT="Per-activity AI grading settings">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="modulename" TYPE="char" LENGTH="50" NOTNULL="true"/>
+                <FIELD NAME="instanceid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="enabled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0"/>
+                <FIELD NAME="quality" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="balanced"/>
+                <FIELD NAME="custominstructions" TYPE="text" NOTNULL="false"/>
+                <FIELD NAME="autorelease" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0"/>
+                <FIELD NAME="rubricid" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="Selected AI quiz rubric id"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="activityuniq" UNIQUE="true" FIELDS="modulename, instanceid"/>
+            </INDEXES>
+        </TABLE>
+
+        <!-- Quiz-specific lightweight rubrics -->
+        <TABLE NAME="hlai_quiz_rubric" COMMENT="AI quiz rubrics (lightweight)">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true"/>
+                <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="Null = global rubric"/>
+                <FIELD NAME="ownerid" TYPE="int" LENGTH="10" NOTNULL="false" COMMENT="User who created rubric"/>
+                <FIELD NAME="visibility" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="course" COMMENT="course|global"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="courseidx" UNIQUE="false" FIELDS="courseid"/>
+            </INDEXES>
+        </TABLE>
+
+        <TABLE NAME="hlai_quiz_rubric_item" COMMENT="Items/criteria for AI quiz rubrics">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="rubricid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="sortorder" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+                <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true"/>
+                <FIELD NAME="maxscore" TYPE="number" LENGTH="10" DECIMALS="5" NOTNULL="true" DEFAULT="0"/>
+                <FIELD NAME="description" TYPE="text" NOTNULL="false"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+                <KEY NAME="rubricfk" TYPE="foreign" FIELDS="rubricid" REFTABLE="hlai_quiz_rubric" REFFIELDS="id"/>
+            </KEYS>
+        </TABLE>
+
+        <TABLE NAME="hlai_grading_quiz_summary" COMMENT="Quiz attempt feedback summaries">
+            <FIELDS>
+                <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+                <FIELD NAME="quizid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="attemptid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="score" TYPE="number" LENGTH="10" DECIMALS="5" NOTNULL="false"/>
+                <FIELD NAME="maxscore" TYPE="number" LENGTH="10" DECIMALS="5" NOTNULL="false"/>
+                <FIELD NAME="feedback" TYPE="text" NOTNULL="false"/>
+                <FIELD NAME="strengths_json" TYPE="text" NOTNULL="false"/>
+                <FIELD NAME="improvements_json" TYPE="text" NOTNULL="false"/>
+                <FIELD NAME="confidence" TYPE="number" LENGTH="5" DECIMALS="2" NOTNULL="false"/>
+                <FIELD NAME="model" TYPE="char" LENGTH="50" NOTNULL="false"/>
+                <FIELD NAME="quality" TYPE="char" LENGTH="20" NOTNULL="false"/>
+                <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true"/>
+                <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true"/>
+            </FIELDS>
+            <KEYS>
+                <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+            </KEYS>
+            <INDEXES>
+                <INDEX NAME="attemptidx" UNIQUE="true" FIELDS="attemptid"/>
+                <INDEX NAME="useridx" UNIQUE="false" FIELDS="userid"/>
+                <INDEX NAME="quizidx" UNIQUE="false" FIELDS="quizid"/>
+            </INDEXES>
+        </TABLE>
+
+    </TABLES>
+</XMLDB>

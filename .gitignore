@@ -1,0 +1,32 @@
+# Moodle plugin gitignore
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.idea/
+.vscode/
+*.sublime-*
+
+# Development files
+*.log
+*.bak
+*.swp
+*~
+
+# Build artifacts
+node_modules/
+.grunt/
+
+# Test files
+/tests/behat/
+/tests/fixtures/
+phpunit.xml
+
+# Documentation builds
+/docs/build/
+
+# Temporary files
+/tmp/
+*.tmp

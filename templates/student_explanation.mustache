@@ -1,0 +1,110 @@
+{{!
+    @template local_hlai_grading/student_explanation
+
+    Context variables supplied from grade_explanation AMD module.
+}}
+<div class="ai-explain-summary">
+    <div class="ai-explain-grade">
+        <span class="ai-explain-grade-value">{{gradevalue}}</span>
+        <span class="ai-explain-grade-max">/ {{grademax}}</span>
+    </div>
+    {{#hasconfidence}}
+        <p class="ai-explain-confidence">{{confidence}}</p>
+    {{/hasconfidence}}
+    {{#hasreasoning}}
+        <div class="ai-explain-overall">
+            <h5>{{overallheading}}</h5>
+            {{#reasoningparagraphs}}
+                <p>{{{.}}}</p>
+            {{/reasoningparagraphs}}
+        </div>
+    {{/hasreasoning}}
+</div>
+
+<div class="ai-explain-section">
+    <h5>{{strengthsheading}}</h5>
+    {{#hasstrengths}}
+        <ul class="ai-explain-list">
+            {{#strengths}}
+                <li>{{.}}</li>
+            {{/strengths}}
+        </ul>
+    {{/hasstrengths}}
+    {{^hasstrengths}}
+        <p class="text-muted">{{strengthsempty}}</p>
+    {{/hasstrengths}}
+</div>
+
+<div class="ai-explain-section">
+    <h5>{{improvementsheading}}</h5>
+    {{#hasimprovements}}
+        <ul class="ai-explain-list improvements">
+            {{#improvements}}
+                <li>{{.}}</li>
+            {{/improvements}}
+        </ul>
+    {{/hasimprovements}}
+    {{^hasimprovements}}
+        <p class="text-muted">{{improvementsempty}}</p>
+    {{/hasimprovements}}
+</div>
+
+{{#hascriteria}}
+    <div class="ai-explain-section">
+        <div class="ai-explain-section-header">
+            <h5>{{criteriaheading}}</h5>
+            <div class="btn-group btn-group-sm" role="group">
+                <button type="button" class="btn btn-link p-0 me-3" id="expand-all-criteria">{{expandall}}</button>
+                <button type="button" class="btn btn-link p-0" id="collapse-all-criteria">{{collapseall}}</button>
+            </div>
+        </div>
+        <div class="ai-explain-criteria">
+            {{#criteria}}
+                <div class="ai-criterion" data-criterion="{{id}}">
+                    <div class="ai-criterion-header">
+                        <div>
+                            <div class="ai-criterion-name">{{name}}</div>
+                            {{#levelname}}
+                                <div class="ai-criterion-level">{{levelname}}</div>
+                            {{/levelname}}
+                        </div>
+                        <div class="ai-criterion-score">{{pointslabel}}</div>
+                    </div>
+                    <button type="button"
+                        class="btn btn-link criterion-explain-btn"
+                        data-criterionid="{{id}}"
+                        aria-controls="reasoning-{{id}}"
+                        aria-expanded="false">
+                        {{togglelabel}}
+                    </button>
+                    {{#hasreasoning}}
+                        <div class="criterion-reasoning" id="reasoning-{{id}}">
+                            {{#reasoningparagraphs}}
+                                <p>{{{.}}}</p>
+                            {{/reasoningparagraphs}}
+                        </div>
+                    {{/hasreasoning}}
+                </div>
+            {{/criteria}}
+        </div>
+    </div>
+{{/hascriteria}}
+
+{{#hasexamples}}
+    <div class="ai-explain-section">
+        <h5>{{examplesheading}}</h5>
+        <div class="ai-explain-examples">
+            {{#examples}}
+                <div class="ai-example {{typeclass}}">
+                    <div class="ai-example-label">{{label}}</div>
+                    {{#text}}
+                        <blockquote>{{.}}</blockquote>
+                    {{/text}}
+                    {{#comment}}
+                        <p>{{.}}</p>
+                    {{/comment}}
+                </div>
+            {{/examples}}
+        </div>
+    </div>
+{{/hasexamples}}
