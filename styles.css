@@ -1,23 +1,21 @@
 /* =========================================
    Iksha Design Tokens (Scoped to plugin UI)
    ========================================= */
-:where(
-    .local-hlai-iksha,
-    .iksha-widget,
-    .iksha-kpi,
-    .iksha-badge,
-    .iksha-table,
-    .iksha-data-list,
-    .iksha-section,
-    .iksha-progress,
-    .ai-grading-banner,
-    .ai-grading-return-banner,
-    .ai-grade-explain-card,
-    .ai-rubric-preview-card,
-    .ai-quiz-summary-card,
-    .ai-grading-review,
-    .ai-banner
-) {
+:where(.local-hlai-iksha,
+.iksha-widget,
+.iksha-kpi,
+.iksha-badge,
+.iksha-table,
+.iksha-data-list,
+.iksha-section,
+.iksha-progress,
+.ai-grading-banner,
+.ai-grading-return-banner,
+.ai-grade-explain-card,
+.ai-rubric-preview-card,
+.ai-quiz-summary-card,
+.ai-grading-review,
+.ai-banner) {
     --iksha-primary: #3b82f6;
     --iksha-primary-light: #eff6ff;
     --iksha-primary-dark: #1d4ed8;

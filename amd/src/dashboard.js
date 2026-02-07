@@ -121,11 +121,11 @@ define(['local_hlai_grading/iksha_charts'], function(IkshaCharts) {
                 if (chartData.rubric_labels) {
                     renderTeacherRubricChart(chartData);
                 }
-            }).catch((error) => {
-                console.warn('ApexCharts failed to load.', error);
+            }).catch(() => {
+                // Charts failed to load - silent failure.
             });
         } catch (e) {
-            console.error('Failed to parse chart data', e);
+            // Failed to parse chart data - silent failure.
         }
     };
 
