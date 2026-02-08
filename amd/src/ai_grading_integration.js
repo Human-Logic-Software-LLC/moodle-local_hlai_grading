@@ -1,4 +1,4 @@
-define(['jquery', 'core/ajax', 'core/notification'], function ($, Ajax, Notification) {
+define(['jquery', 'core/ajax', 'core/notification'], function($, Ajax, Notification) {
 
     /**
      * Developed and maintained by Human Logic Software LLC.
@@ -33,7 +33,7 @@ define(['jquery', 'core/ajax', 'core/notification'], function ($, Ajax, Notifica
 
         // Add AI status cells for each row.
         var $rows = $table.find('tbody tr');
-        $rows.each(function () {
+        $rows.each(function() {
             var $row = $(this);
 
             // Skip if already processed.
@@ -51,7 +51,7 @@ define(['jquery', 'core/ajax', 'core/notification'], function ($, Ajax, Notifica
             }
 
             // Add placeholder cell.
-            var $gradeCell = $row.find('td').filter(function () {
+            var $gradeCell = $row.find('td').filter(function() {
                 return $(this).text().match(/\d+\/\d+|-/);
             }).first();
 
@@ -100,9 +100,9 @@ define(['jquery', 'core/ajax', 'core/notification'], function ($, Ajax, Notifica
             args: {cmid: cmid}
         }]);
 
-        promises[0].done(function (response) {
+        promises[0].done(function(response) {
             updateAIStatusCells(response);
-        }).fail(function (error) {
+        }).fail(function(error) {
             Notification.exception(error);
         });
     }
@@ -113,7 +113,7 @@ define(['jquery', 'core/ajax', 'core/notification'], function ($, Ajax, Notifica
      * @param {Object} statuses
      */
     function updateAIStatusCells(statuses) {
-        $.each(statuses, function (userid, status) {
+        $.each(statuses, function(userid, status) {
             var $cell = $('td.ai-status-cell[data-userid="' + userid + '"]');
             if ($cell.length > 0) {
                 $cell.html(renderAIStatusBadge(status));

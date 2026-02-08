@@ -4,7 +4,7 @@ define([
     'core/notification',
     'core/templates',
     'core/str'
-], function ($, Ajax, Notification, Templates, Str) {
+], function($, Ajax, Notification, Templates, Str) {
     const stringDefs = [
         {key: 'explain_grade', component: 'local_hlai_grading'},
         {key: 'hide_explanation', component: 'local_hlai_grading'},
@@ -28,9 +28,9 @@ define([
         {key: 'explanation_toggle_hide', component: 'local_hlai_grading'},
     ];
 
-    const getStrings = () => Str.get_strings(stringDefs).then(function (results) {
+    const getStrings = () => Str.get_strings(stringDefs).then(function(results) {
         const map = {};
-        results.forEach(function (value, index) {
+        results.forEach(function(value, index) {
             map[stringDefs[index].key] = value;
         });
         return map;
@@ -206,7 +206,7 @@ define([
     const renderExplanation = (panel, data, strings) => {
         const context = prepareTemplateContext(data, strings);
         return Templates.render('local_hlai_grading/student_explanation', context)
-            .then(function (html, js) {
+            .then(function(html, js) {
                 panel.innerHTML = html;
                 Templates.runTemplateJS(js);
                 attachCriterionHandlers(panel, strings);

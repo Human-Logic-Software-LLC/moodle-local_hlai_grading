@@ -3,7 +3,7 @@
  *
  * @module local_hlai_grading/apexcharts_loader
  */
-define([], function () {
+define([], function() {
     let loadPromise = null;
 
     const restoreAmdFlag = (defineRef, originalAmd) => {

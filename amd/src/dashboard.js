@@ -7,7 +7,7 @@
  * @module     local_hlai_grading/dashboard
  */
 
-define(['local_hlai_grading/iksha_charts'], function (IkshaCharts) {
+define(['local_hlai_grading/iksha_charts'], function(IkshaCharts) {
     const renderAdminChart = data => {
         const chartNode = document.querySelector('#admin-activity-chart');
         if (!chartNode) {

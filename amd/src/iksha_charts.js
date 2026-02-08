@@ -3,7 +3,7 @@
  *
  * @module local_hlai_grading/iksha_charts
  */
-define(['local_hlai_grading/apexcharts_loader'], function (ApexLoader) {
+define(['local_hlai_grading/apexcharts_loader'], function(ApexLoader) {
     let Apex = window.ApexCharts || null;
 
     const load = () => ApexLoader.load().then(library => {
