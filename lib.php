@@ -182,13 +182,13 @@ function local_hlai_grading_before_http_headers() {
 
         $submission = reset($submissions);
 
-        $hasreleased = $DB->record_exists('hlai_grading_results', [
+        $hasreleased = $DB->record_exists('local_hlai_grading_results', [
             'submissionid' => $submission->id,
             'status' => 'released',
         ]);
 
         if (!$hasreleased) {
-            $hasreleased = $DB->record_exists('hlai_grading_results', [
+            $hasreleased = $DB->record_exists('local_hlai_grading_results', [
                 'userid' => $USER->id,
                 'modulename' => 'assign',
                 'instanceid' => $PAGE->cm->instance,
@@ -435,7 +435,7 @@ function local_hlai_grading_before_footer() {
             $isgrader = has_capability('mod/assign:grade', $context);
             $actingas = \core\session\manager::is_loggedinas();
             $assignid = (int)$PAGE->cm->instance;
-            $hasrelease = $DB->record_exists('hlai_grading_results', [
+            $hasrelease = $DB->record_exists('local_hlai_grading_results', [
                 'modulename' => 'assign',
                 'instanceid' => $assignid,
                 'userid' => (int)$USER->id,
@@ -534,7 +534,7 @@ function local_hlai_grading_before_standard_top_of_body_html() {
     $courseid = $PAGE->course->id;
 
     // Count pending reviews for this module instance.
-    $pending = $DB->count_records('hlai_grading_results', [
+    $pending = $DB->count_records('local_hlai_grading_results', [
         'instanceid' => $instanceid,
         'modulename' => $modulename,
         'status' => 'draft',
@@ -617,7 +617,7 @@ function local_hlai_grading_get_activity_settings(string $modulename, int $insta
     }
 
     $criteria = ['modulename' => $modulename, 'instanceid' => $instanceid];
-    $record = $DB->get_record('hlai_grading_act_settings', $criteria);
+    $record = $DB->get_record('local_hlai_grading_act_settings', $criteria);
     if ($record) {
         return $record;
     }
@@ -654,7 +654,7 @@ function local_hlai_grading_save_activity_settings(
 
     $now = time();
     $criteria = ['modulename' => $modulename, 'instanceid' => $instanceid];
-    $record = $DB->get_record('hlai_grading_act_settings', $criteria);
+    $record = $DB->get_record('local_hlai_grading_act_settings', $criteria);
 
     if ($record) {
         $record->enabled = $enabled;
@@ -663,7 +663,7 @@ function local_hlai_grading_save_activity_settings(
         $record->autorelease = $autorelease;
         $record->rubricid = $rubricid;
         $record->timemodified = $now;
-        $DB->update_record('hlai_grading_act_settings', $record);
+        $DB->update_record('local_hlai_grading_act_settings', $record);
     } else {
         $insert = (object)[
             'modulename' => $modulename,
@@ -676,7 +676,7 @@ function local_hlai_grading_save_activity_settings(
             'timecreated' => $now,
             'timemodified' => $now,
         ];
-        $DB->insert_record('hlai_grading_act_settings', $insert);
+        $DB->insert_record('local_hlai_grading_act_settings', $insert);
     }
 }
 
@@ -719,7 +719,7 @@ function local_hlai_grading_get_quiz_rubrics(int $courseid, context $context): a
         $params = [];
     }
 
-    return $DB->get_records_select('hlai_quiz_rubric', $sql, $params, 'timemodified DESC');
+    return $DB->get_records_select('local_hlai_grading_quiz_rubric', $sql, $params, 'timemodified DESC');
 }
 
 /**
@@ -735,7 +735,7 @@ function local_hlai_grading_get_quiz_rubric_items(int $rubricid): array {
         return [];
     }
 
-    return $DB->get_records('hlai_quiz_rubric_item', ['rubricid' => $rubricid], 'sortorder ASC, id ASC');
+    return $DB->get_records('local_hlai_grading_quiz_rubric_item', ['rubricid' => $rubricid], 'sortorder ASC, id ASC');
 }
 
 /**
@@ -827,7 +827,7 @@ function local_hlai_grading_get_quiz_rubric_json(int $rubricid): ?string {
         return null;
     }
 
-    $rubric = $DB->get_record('hlai_quiz_rubric', ['id' => $rubricid], '*', IGNORE_MISSING);
+    $rubric = $DB->get_record('local_hlai_grading_quiz_rubric', ['id' => $rubricid], '*', IGNORE_MISSING);
     if (!$rubric) {
         return null;
     }
@@ -895,17 +895,17 @@ function local_hlai_grading_save_quiz_rubric(
     $transaction = $DB->start_delegated_transaction();
 
     if ($rubricid) {
-        $existing = $DB->get_record('hlai_quiz_rubric', ['id' => $rubricid], 'id, ownerid', MUST_EXIST);
+        $existing = $DB->get_record('local_hlai_grading_quiz_rubric', ['id' => $rubricid], 'id, ownerid', MUST_EXIST);
         $record->ownerid = $existing->ownerid ?? $ownerid;
         $record->id = $rubricid;
-        $DB->update_record('hlai_quiz_rubric', $record);
+        $DB->update_record('local_hlai_grading_quiz_rubric', $record);
     } else {
         $record->ownerid = $ownerid;
         $record->timecreated = $now;
-        $rubricid = (int)$DB->insert_record('hlai_quiz_rubric', $record);
+        $rubricid = (int)$DB->insert_record('local_hlai_grading_quiz_rubric', $record);
     }
 
-    $DB->delete_records('hlai_quiz_rubric_item', ['rubricid' => $rubricid]);
+    $DB->delete_records('local_hlai_grading_quiz_rubric_item', ['rubricid' => $rubricid]);
 
     $order = 1;
     foreach ($items as $item) {
@@ -916,7 +916,7 @@ function local_hlai_grading_save_quiz_rubric(
             'maxscore' => $item['maxscore'],
             'description' => $item['description'] ?? '',
         ];
-        $DB->insert_record('hlai_quiz_rubric_item', $itemrecord);
+        $DB->insert_record('local_hlai_grading_quiz_rubric_item', $itemrecord);
         $order++;
     }
 
@@ -939,7 +939,7 @@ function local_hlai_grading_delete_quiz_rubric(int $rubricid): void {
     }
 
     $transaction = $DB->start_delegated_transaction();
-    $DB->delete_records('hlai_quiz_rubric_item', ['rubricid' => $rubricid]);
-    $DB->delete_records('hlai_quiz_rubric', ['id' => $rubricid]);
+    $DB->delete_records('local_hlai_grading_quiz_rubric_item', ['rubricid' => $rubricid]);
+    $DB->delete_records('local_hlai_grading_quiz_rubric', ['id' => $rubricid]);
     $transaction->allow_commit();
 }

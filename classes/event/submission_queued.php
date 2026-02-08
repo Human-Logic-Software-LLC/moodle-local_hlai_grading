@@ -36,7 +36,7 @@ class submission_queued extends \core\event\base {
     protected function init(): void {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_TEACHING;
-        $this->data['objecttable'] = 'hlai_grading_queue';
+        $this->data['objecttable'] = 'local_hlai_grading_queue';
     }
 
     /**

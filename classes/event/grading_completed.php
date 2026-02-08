@@ -36,7 +36,7 @@ class grading_completed extends \core\event\base {
     protected function init(): void {
         $this->data['crud'] = 'c';
         $this->data['edulevel'] = self::LEVEL_TEACHING;
-        $this->data['objecttable'] = 'hlai_grading_results';
+        $this->data['objecttable'] = 'local_hlai_grading_results';
     }
 
     /**

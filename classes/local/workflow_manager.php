@@ -90,6 +90,6 @@ class workflow_manager {
         $log->details = $details;
         $log->timecreated = time();
 
-        $DB->insert_record('hlai_grading_log', $log);
+        $DB->insert_record('local_hlai_grading_log', $log);
     }
 }

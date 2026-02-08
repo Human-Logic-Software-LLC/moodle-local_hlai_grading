@@ -64,7 +64,7 @@ $PAGE->set_title(get_string('dashboardheading', 'local_hlai_grading'));
 $PAGE->set_heading(format_string($course->fullname));
 $PAGE->requires->css('/local/hlai_grading/styles.css');
 
-$$resolvesource = function (?string $model): string {
+$resolvesource = function (?string $model): string {
     if (!$model) {
         return 'unknown';
     }

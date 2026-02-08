@@ -93,7 +93,7 @@ if (empty($submissions)) {
         echo html_writer::start_tag('tr');
 
         // Student name.
-        echo html_writer::tag('td', fullname($user));
+        echo html_writer::tag('td', s(fullname($user)));
 
         // Submission status.
         $status = 'Not submitted';

@@ -87,7 +87,7 @@ class quiz_summary {
         $results = [];
         $resultsbyslot = [];
         if (!empty($essayslots)) {
-            $results = $DB->get_records('hlai_grading_results', [
+            $results = $DB->get_records('local_hlai_grading_results', [
                 'modulename' => 'quiz', 'attemptid' => $attemptid,
             ], 'timecreated ASC');
 
@@ -126,13 +126,13 @@ class quiz_summary {
             'timemodified' => $now,
         ];
 
-        $existing = $DB->get_record('hlai_grading_quiz_summary', ['attemptid' => $attemptid], '*', IGNORE_MISSING);
+        $existing = $DB->get_record('local_hlai_grading_quiz_summary', ['attemptid' => $attemptid], '*', IGNORE_MISSING);
         if ($existing) {
             $record->id = $existing->id;
-            $DB->update_record('hlai_grading_quiz_summary', $record);
+            $DB->update_record('local_hlai_grading_quiz_summary', $record);
         } else {
             $record->timecreated = $now;
-            $DB->insert_record('hlai_grading_quiz_summary', $record);
+            $DB->insert_record('local_hlai_grading_quiz_summary', $record);
         }
     }
 
@@ -164,7 +164,7 @@ class quiz_summary {
             return '';
         }
 
-        $summary = $DB->get_record('hlai_grading_quiz_summary', ['attemptid' => $attemptid], '*', IGNORE_MISSING);
+        $summary = $DB->get_record('local_hlai_grading_quiz_summary', ['attemptid' => $attemptid], '*', IGNORE_MISSING);
         if (!$summary) {
             return '';
         }
@@ -352,7 +352,7 @@ class quiz_summary {
 
         $index = 1;
         foreach ($results as $result) {
-            $queue = $DB->get_record('hlai_grading_queue', ['id' => $result->queueid], 'payload', IGNORE_MISSING);
+            $queue = $DB->get_record('local_hlai_grading_queue', ['id' => $result->queueid], 'payload', IGNORE_MISSING);
             $payload = self::decode_payload($queue ? ($queue->payload ?? null) : null);
             $request = $payload['request'];
             $analysis = $payload['analysis'];

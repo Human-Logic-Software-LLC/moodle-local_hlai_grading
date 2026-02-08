@@ -56,7 +56,7 @@ class queuer {
             'timecreated' => time(),
         ];
 
-        $queueid = $DB->insert_record('hlai_grading_queue', $record);
+        $queueid = $DB->insert_record('local_hlai_grading_queue', $record);
 
         $context = $this->resolve_context($cmid, $courseid);
         \local_hlai_grading\event\submission_queued::create([

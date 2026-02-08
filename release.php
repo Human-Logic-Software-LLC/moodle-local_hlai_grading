@@ -32,8 +32,8 @@ $action = optional_param('action', 'release', PARAM_ALPHA); // Release, reject, 
 
 global $DB, $USER, $OUTPUT, $PAGE, $CFG;
 
-$result = $DB->get_record('hlai_grading_results', ['id' => $id], '*', MUST_EXIST);
-$queue  = $DB->get_record('hlai_grading_queue', ['id' => $result->queueid], '*', IGNORE_MISSING);
+$result = $DB->get_record('local_hlai_grading_results', ['id' => $id], '*', MUST_EXIST);
+$queue  = $DB->get_record('local_hlai_grading_queue', ['id' => $result->queueid], '*', IGNORE_MISSING);
 if (!$queue) {
     $queue = (object)[
         'id' => $result->queueid,
@@ -152,7 +152,7 @@ if ($assigninstance) {
                         $submissiontext = html_writer::tag('p', get_string('submittedfiles', 'local_hlai_grading') . ':');
                         $submissiontext .= html_writer::start_tag('ul');
                         foreach ($files as $file) {
-                            $submissiontext .= html_writer::tag('li', $file->get_filename());
+                            $submissiontext .= html_writer::tag('li', s($file->get_filename()));
                         }
                         $submissiontext .= html_writer::end_tag('ul');
                     }

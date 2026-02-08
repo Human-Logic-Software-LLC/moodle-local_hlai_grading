@@ -46,8 +46,8 @@ class result_service {
     public static function get_result_context(int $resultid): array {
         global $DB, $CFG;
 
-        $result = $DB->get_record('hlai_grading_results', ['id' => $resultid], '*', MUST_EXIST);
-        $queue = $DB->get_record('hlai_grading_queue', ['id' => $result->queueid], '*', IGNORE_MISSING);
+        $result = $DB->get_record('local_hlai_grading_results', ['id' => $resultid], '*', MUST_EXIST);
+        $queue = $DB->get_record('local_hlai_grading_queue', ['id' => $result->queueid], '*', IGNORE_MISSING);
         if (!$queue) {
             $queue = (object)[
                 'id' => $result->queueid,
@@ -211,7 +211,7 @@ class result_service {
         $result->reviewed = 1;
         $result->reviewer_id = $reviewerid;
         $result->timereviewed = time();
-        $DB->update_record('hlai_grading_results', $result);
+        $DB->update_record('local_hlai_grading_results', $result);
 
         if ($modulename === 'quiz' && !empty($result->attemptid)) {
             $quality = $result->quality ?: (get_config('local_hlai_grading', 'defaultquality') ?: 'balanced');
@@ -273,7 +273,7 @@ class result_service {
         $result->reviewed = 1;
         $result->reviewer_id = $reviewerid;
         $result->timereviewed = time();
-        $DB->update_record('hlai_grading_results', $result);
+        $DB->update_record('local_hlai_grading_results', $result);
 
         if ($result->modulename === 'quiz' && !empty($result->attemptid)) {
             $quality = $result->quality ?: (get_config('local_hlai_grading', 'defaultquality') ?: 'balanced');

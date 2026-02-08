@@ -76,7 +76,7 @@ class get_result extends external_api {
         $result = $contextdata['result'];
 
         $criteriarecords = $DB->get_records(
-            'hlai_grading_rubric_scores',
+            'local_hlai_grading_rubric_scores',
             ['resultid' => $result->id],
             'id ASC'
         );

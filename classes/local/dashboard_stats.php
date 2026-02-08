@@ -37,13 +37,13 @@ class dashboard_stats {
         global $DB;
 
         // 1. Queue Depth (Pending or Processing items).
-        $queuedepth = $DB->count_records_select('hlai_grading_queue', "status = 'pending' OR status = 'processing'");
+        $queuedepth = $DB->count_records_select('local_hlai_grading_queue', "status = 'pending' OR status = 'processing'");
 
         // 2. Total Graded (Completed items in results).
-        $totalgraded = $DB->count_records('hlai_grading_results');
+        $totalgraded = $DB->count_records('local_hlai_grading_results');
 
         // 3. Failures (Status failed or high retries).
-        $failures = $DB->count_records_select('hlai_grading_queue', "status = 'failed' OR retries >= 3");
+        $failures = $DB->count_records_select('local_hlai_grading_queue', "status = 'failed' OR retries >= 3");
 
         // 4. Token Usage (Sum of tokens_used).
         $tokensql = "SELECT SUM(tokens_used) FROM {local_hlai_grading_results}";
@@ -172,7 +172,7 @@ class dashboard_stats {
         }
 
         // 1. Items in Queue for this course.
-        $queuecount = $DB->count_records('hlai_grading_queue', ['courseid' => $courseid, 'status' => 'pending']);
+        $queuecount = $DB->count_records('local_hlai_grading_queue', ['courseid' => $courseid, 'status' => 'pending']);
 
         // 2. Graded Items for this course.
         // Need to join via queueid to get courseid context.

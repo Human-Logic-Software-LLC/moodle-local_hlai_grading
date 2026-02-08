@@ -42,7 +42,7 @@ class provider implements
      * @return collection The updated collection.
      */
     public static function get_metadata(collection $collection): collection {
-        $collection->add_database_table('hlai_grading_queue', [
+        $collection->add_database_table('local_hlai_grading_queue', [
             'userid' => 'privacy:metadata:hlai_grading_queue:userid',
             'courseid' => 'privacy:metadata:hlai_grading_queue:courseid',
             'cmid' => 'privacy:metadata:hlai_grading_queue:cmid',
@@ -51,7 +51,7 @@ class provider implements
             'timecreated' => 'privacy:metadata:hlai_grading_queue:timecreated',
         ]);
 
-        $collection->add_database_table('hlai_grading_results', [
+        $collection->add_database_table('local_hlai_grading_results', [
             'userid' => 'privacy:metadata:hlai_grading_results:userid',
             'grade' => 'privacy:metadata:hlai_grading_results:grade',
             'maxgrade' => 'privacy:metadata:hlai_grading_results:maxgrade',
@@ -61,21 +61,21 @@ class provider implements
             'timecreated' => 'privacy:metadata:hlai_grading_results:timecreated',
         ]);
 
-        $collection->add_database_table('hlai_grading_rubric_scores', [
+        $collection->add_database_table('local_hlai_grading_rubric_scores', [
             'resultid' => 'privacy:metadata:hlai_grading_rubric_scores:resultid',
             'criterionid' => 'privacy:metadata:hlai_grading_rubric_scores:criterionid',
             'score' => 'privacy:metadata:hlai_grading_rubric_scores:score',
             'reasoning' => 'privacy:metadata:hlai_grading_rubric_scores:reasoning',
         ]);
 
-        $collection->add_database_table('hlai_grading_log', [
+        $collection->add_database_table('local_hlai_grading_log', [
             'userid' => 'privacy:metadata:hlai_grading_log:userid',
             'action' => 'privacy:metadata:hlai_grading_log:action',
             'details' => 'privacy:metadata:hlai_grading_log:details',
             'timecreated' => 'privacy:metadata:hlai_grading_log:timecreated',
         ]);
 
-        $collection->add_database_table('hlai_grading_quiz_summary', [
+        $collection->add_database_table('local_hlai_grading_quiz_summary', [
             'userid' => 'privacy:metadata:hlai_grading_quiz_summary:userid',
             'score' => 'privacy:metadata:hlai_grading_quiz_summary:score',
             'feedback' => 'privacy:metadata:hlai_grading_quiz_summary:feedback',
@@ -96,10 +96,10 @@ class provider implements
         global $DB;
 
         $contextlist = new contextlist();
-        $hasdata = $DB->record_exists('hlai_grading_results', ['userid' => $userid]) ||
-            $DB->record_exists('hlai_grading_queue', ['userid' => $userid]) ||
-            $DB->record_exists('hlai_grading_log', ['userid' => $userid]) ||
-            $DB->record_exists('hlai_grading_quiz_summary', ['userid' => $userid]);
+        $hasdata = $DB->record_exists('local_hlai_grading_results', ['userid' => $userid]) ||
+            $DB->record_exists('local_hlai_grading_queue', ['userid' => $userid]) ||
+            $DB->record_exists('local_hlai_grading_log', ['userid' => $userid]) ||
+            $DB->record_exists('local_hlai_grading_quiz_summary', ['userid' => $userid]);
 
         if ($hasdata) {
             $contextlist->add_system_context();
@@ -128,8 +128,8 @@ class provider implements
         }
 
         $data = new \stdClass();
-        $data->queue = array_values($DB->get_records('hlai_grading_queue', ['userid' => $userid]));
-        $data->results = array_values($DB->get_records('hlai_grading_results', ['userid' => $userid]));
+        $data->queue = array_values($DB->get_records('local_hlai_grading_queue', ['userid' => $userid]));
+        $data->results = array_values($DB->get_records('local_hlai_grading_results', ['userid' => $userid]));
         $data->rubric_scores = array_values($DB->get_records_sql(
             'SELECT rs.*
                FROM {local_hlai_grading_rubric_scores} rs
@@ -137,8 +137,8 @@ class provider implements
               WHERE r.userid = :userid',
             ['userid' => $userid]
         ));
-        $data->log = array_values($DB->get_records('hlai_grading_log', ['userid' => $userid]));
-        $data->quiz_summary = array_values($DB->get_records('hlai_grading_quiz_summary', ['userid' => $userid]));
+        $data->log = array_values($DB->get_records('local_hlai_grading_log', ['userid' => $userid]));
+        $data->quiz_summary = array_values($DB->get_records('local_hlai_grading_quiz_summary', ['userid' => $userid]));
 
         writer::with_context($context)->export_data(
             [get_string('pluginname', 'local_hlai_grading')],
@@ -159,11 +159,11 @@ class provider implements
             return;
         }
 
-        $DB->delete_records('hlai_grading_queue');
-        $DB->delete_records('hlai_grading_results');
-        $DB->delete_records('hlai_grading_rubric_scores');
-        $DB->delete_records('hlai_grading_log');
-        $DB->delete_records('hlai_grading_quiz_summary');
+        $DB->delete_records('local_hlai_grading_queue');
+        $DB->delete_records('local_hlai_grading_results');
+        $DB->delete_records('local_hlai_grading_rubric_scores');
+        $DB->delete_records('local_hlai_grading_log');
+        $DB->delete_records('local_hlai_grading_quiz_summary');
     }
 
     /**
@@ -181,14 +181,14 @@ class provider implements
 
         $userid = $contextlist->get_user()->id;
 
-        $DB->delete_records('hlai_grading_queue', ['userid' => $userid]);
-        $DB->delete_records('hlai_grading_results', ['userid' => $userid]);
+        $DB->delete_records('local_hlai_grading_queue', ['userid' => $userid]);
+        $DB->delete_records('local_hlai_grading_results', ['userid' => $userid]);
         $DB->delete_records_select(
-            'hlai_grading_rubric_scores',
+            'local_hlai_grading_rubric_scores',
             'resultid IN (SELECT id FROM {local_hlai_grading_results} WHERE userid = :userid)',
             ['userid' => $userid]
         );
-        $DB->delete_records('hlai_grading_log', ['userid' => $userid]);
-        $DB->delete_records('hlai_grading_quiz_summary', ['userid' => $userid]);
+        $DB->delete_records('local_hlai_grading_log', ['userid' => $userid]);
+        $DB->delete_records('local_hlai_grading_quiz_summary', ['userid' => $userid]);
     }
 }

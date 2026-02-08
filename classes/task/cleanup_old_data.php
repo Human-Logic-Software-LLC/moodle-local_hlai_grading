@@ -54,7 +54,7 @@ class cleanup_old_data extends \core\task\scheduled_task {
 
         // Queue: remove completed/failed items older than cutoff.
         $DB->delete_records_select(
-            'hlai_grading_queue',
+            'local_hlai_grading_queue',
             'timecompleted IS NOT NULL AND timecompleted < :cutoff AND status IN (:statusdone, :statusfailed, :statuserror)',
             [
                 'cutoff' => $cutoff,
@@ -66,7 +66,7 @@ class cleanup_old_data extends \core\task\scheduled_task {
 
         // Results: keep only drafts whilst purging released/rejected artefacts.
         $DB->delete_records_select(
-            'hlai_grading_results',
+            'local_hlai_grading_results',
             'timecreated < :cutoff AND status IN (:released, :rejected)',
             [
                 'cutoff' => $cutoff,
@@ -77,14 +77,14 @@ class cleanup_old_data extends \core\task\scheduled_task {
 
         // Rubric scores reference results by timecreated.
         $DB->delete_records_select(
-            'hlai_grading_rubric_scores',
+            'local_hlai_grading_rubric_scores',
             'timecreated < :cutoff',
             ['cutoff' => $cutoff]
         );
 
         // Logs: remove anything outside retention window.
         $DB->delete_records_select(
-            'hlai_grading_log',
+            'local_hlai_grading_log',
             'timecreated < :cutoff',
             ['cutoff' => $cutoff]
         );

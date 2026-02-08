@@ -48,7 +48,7 @@ class rate_limiter {
             'userid' => $userid, 'action' => $action, 'since' => $since,
         ];
         $count = $DB->count_records_select(
-            'hlai_grading_log',
+            'local_hlai_grading_log',
             'userid = :userid AND action = :action AND timecreated >= :since',
             $params
         );

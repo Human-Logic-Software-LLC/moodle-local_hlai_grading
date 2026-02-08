@@ -151,7 +151,7 @@ class trigger_batch extends external_api {
                 }
 
                 $exists = $DB->record_exists_select(
-                    'hlai_grading_results',
+                    'local_hlai_grading_results',
                     'modulename = :mod AND instanceid = :instance AND userid = :userid AND status <> :rejected',
                     [
                         'mod' => 'assign',

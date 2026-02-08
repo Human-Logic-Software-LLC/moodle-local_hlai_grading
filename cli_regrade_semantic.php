@@ -48,7 +48,11 @@ function normalize_text_local(string $text): string {
 global $DB;
 
 $quizid = 6;
-$results = $DB->get_records('hlai_grading_results', ['modulename' => 'quiz', 'instanceid' => $quizid], 'attemptid ASC, slot ASC');
+$results = $DB->get_records(
+    'local_hlai_grading_results',
+    ['modulename' => 'quiz', 'instanceid' => $quizid],
+    'attemptid ASC, slot ASC'
+);
 if (!$results) {
     echo "No quiz results found for quiz {$quizid}.\n";
     exit(0);
@@ -102,7 +106,7 @@ foreach ($grouped as $attemptid => $attemptresults) {
         }
 
         $queuepayload = [];
-        $queue = $DB->get_record('hlai_grading_queue', ['id' => $result->queueid], 'id, payload', IGNORE_MISSING);
+        $queue = $DB->get_record('local_hlai_grading_queue', ['id' => $result->queueid], 'id, payload', IGNORE_MISSING);
         if ($queue) {
             $queuepayload = json_decode($queue->payload ?? '[]', true) ?: [];
             if (isset($queuepayload['request']) && is_array($queuepayload['request'])) {
@@ -181,7 +185,7 @@ foreach ($grouped as $attemptid => $attemptresults) {
         $result->confidence = isset($analysis['final_percent']) ? round((float)$analysis['final_percent'], 2) : $result->confidence;
         $result->model = ($analysis['method'] ?? 'semantic') . ':local';
 
-        $DB->update_record('hlai_grading_results', $result);
+        $DB->update_record('local_hlai_grading_results', $result);
         $updated++;
 
         if ($queue) {
@@ -197,7 +201,7 @@ foreach ($grouped as $attemptid => $attemptresults) {
                 ];
             }
             $queue->payload = json_encode($payload);
-            $DB->update_record('hlai_grading_queue', $queue);
+            $DB->update_record('local_hlai_grading_queue', $queue);
         }
     }
 }

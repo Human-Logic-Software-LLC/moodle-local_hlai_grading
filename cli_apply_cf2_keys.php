@@ -231,7 +231,7 @@ if (!empty($unmatched)) {
     }
 }
 
-$pending = $DB->get_records('hlai_grading_queue', ['status' => 'pending', 'component' => 'mod_quiz']);
+$pending = $DB->get_records('local_hlai_grading_queue', ['status' => 'pending', 'component' => 'mod_quiz']);
 $payloadupdated = 0;
 foreach ($pending as $item) {
     $payload = json_decode($item->payload ?? '', true);
@@ -256,7 +256,7 @@ foreach ($pending as $item) {
     }
     $payload['graderkey'] = $graderkey;
     $item->payload = json_encode($payload);
-    $DB->update_record('hlai_grading_queue', $item);
+    $DB->update_record('local_hlai_grading_queue', $item);
     $payloadupdated++;
 }
 

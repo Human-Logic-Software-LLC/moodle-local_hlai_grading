@@ -301,7 +301,7 @@ class process_queue extends scheduled_task {
                 $result->timecreated  = time();
                 $result->timereviewed = null;
 
-                $resultid = $DB->insert_record('hlai_grading_results', $result);
+                $resultid = $DB->insert_record('local_hlai_grading_results', $result);
                 if (!empty($rubriccriteria)) {
                     try {
                         $this->store_rubric_scores($resultid, $rubriccriteria, $rubricsnapshot);
@@ -335,7 +335,7 @@ class process_queue extends scheduled_task {
                         'resultid' => $resultid,
                         'provider' => $providerlabel,
                     ]);
-                    $DB->update_record('hlai_grading_queue', $item);
+                    $DB->update_record('local_hlai_grading_queue', $item);
 
                     \local_hlai_grading\local\workflow_manager::log_action(
                         $item->id,
@@ -363,7 +363,7 @@ class process_queue extends scheduled_task {
                     'resultid' => $resultid,
                     'provider' => $providerlabel,
                 ]);
-                $DB->update_record('hlai_grading_queue', $item);
+                $DB->update_record('local_hlai_grading_queue', $item);
 
                 // SPEC: Set workflow to 'inreview' so teacher can see it.
                 if ($assignid && $userid) {
@@ -410,7 +410,7 @@ class process_queue extends scheduled_task {
                 }
 
                 $item->payload = json_encode($errorpayload);
-                $DB->update_record('hlai_grading_queue', $item);
+                $DB->update_record('local_hlai_grading_queue', $item);
 
                 // SPEC: Log failure.
                 \local_hlai_grading\local\workflow_manager::log_action(
@@ -563,7 +563,7 @@ class process_queue extends scheduled_task {
             'reviewer_id' => 0,
             'timereviewed' => $now,
         ];
-        $DB->update_record('hlai_grading_results', $updaterecord);
+        $DB->update_record('local_hlai_grading_results', $updaterecord);
 
         if ($result->modulename === 'assign' && $result->instanceid && $result->userid && $courseid) {
             $this->push_grade($courseid, $result->instanceid, $result->userid, $ai, $pushfeedback);
@@ -806,7 +806,7 @@ class process_queue extends scheduled_task {
                 }
             }
 
-            $DB->insert_record('hlai_grading_rubric_scores', $record);
+            $DB->insert_record('local_hlai_grading_rubric_scores', $record);
         }
     }
 

@@ -54,7 +54,7 @@ $confirmdelete = false;
 $existing = null;
 
 if ($rubricid) {
-    $existing = $DB->get_record('hlai_quiz_rubric', ['id' => $rubricid], '*', IGNORE_MISSING);
+    $existing = $DB->get_record('local_hlai_grading_quiz_rubric', ['id' => $rubricid], '*', IGNORE_MISSING);
     if (!$existing) {
         $errors[] = get_string('quizrubric_notfound', 'local_hlai_grading');
     } else {

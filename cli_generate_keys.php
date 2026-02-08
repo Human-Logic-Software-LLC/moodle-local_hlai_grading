@@ -155,7 +155,7 @@ foreach ($missing as $essay) {
 echo "Generated keys: {$generated}\n";
 echo "Failed keys: {$failed}\n";
 
-$pending = $DB->get_records('hlai_grading_queue', ['status' => 'pending', 'component' => 'mod_quiz']);
+$pending = $DB->get_records('local_hlai_grading_queue', ['status' => 'pending', 'component' => 'mod_quiz']);
 $updated = 0;
 
 foreach ($pending as $item) {
@@ -190,7 +190,7 @@ foreach ($pending as $item) {
 
     $payload['graderkey'] = $graderkey;
     $item->payload = json_encode($payload);
-    $DB->update_record('hlai_grading_queue', $item);
+    $DB->update_record('local_hlai_grading_queue', $item);
     $updated++;
 }
 

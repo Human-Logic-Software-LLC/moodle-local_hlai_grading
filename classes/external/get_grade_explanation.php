@@ -79,7 +79,7 @@ class get_grade_explanation extends external_api {
         }
 
         $records = $DB->get_records(
-            'hlai_grading_results',
+            'local_hlai_grading_results',
             ['submissionid' => $submission->id],
             'timereviewed DESC, timecreated DESC, id DESC'
         );
@@ -96,7 +96,7 @@ class get_grade_explanation extends external_api {
             throw new \moodle_exception('no_ai_grade_found', 'local_hlai_grading');
         }
 
-        $criteriarecords = $DB->get_records('hlai_grading_rubric_scores', ['resultid' => $result->id], 'id ASC');
+        $criteriarecords = $DB->get_records('local_hlai_grading_rubric_scores', ['resultid' => $result->id], 'id ASC');
 
         $criteria = [];
         foreach ($criteriarecords as $record) {
