@@ -82,6 +82,9 @@ if (empty($submissions)) {
     echo html_writer::end_tag('tr');
     echo html_writer::end_tag('thead');
 
+    // Preload all participant user records in a single query to avoid N+1 DB calls.
+    $users = $DB->get_records_list('user', 'id', array_keys($submissions));
+
     // Body.
     echo html_writer::start_tag('tbody');
 
@@ -89,7 +92,7 @@ if (empty($submissions)) {
         $submission = $assign->get_user_submission($userid, false);
         $grade = $assign->get_user_grade($userid, false);
 
-        $user = $DB->get_record('user', ['id' => $userid]);
+        $user = $users[$userid] ?? null;
 
         echo html_writer::start_tag('tr');
 
