@@ -63,20 +63,37 @@ foreach ($results as $result) {
     $grouped[$result->attemptid][] = $result;
 }
 
+$attemptids = array_keys($grouped);
+[$insql, $params] = $DB->get_in_or_equal($attemptids, SQL_PARAMS_NAMED);
+$sql = "SELECT * FROM {quiz_attempts} WHERE id " . $insql;
+$attempts = $DB->get_records_sql($sql, $params);
+
+$quizids = [];
+foreach ($attempts as $att) {
+    $quizids[(int)$att->quiz] = (int)$att->quiz;
+}
+if (!empty($quizids)) {
+    [$qinsql, $qparams] = $DB->get_in_or_equal(array_values($quizids), SQL_PARAMS_NAMED);
+    $sql = "SELECT id, course FROM {quiz} WHERE id " . $qinsql;
+    $quizzes = $DB->get_records_sql($sql, $qparams);
+} else {
+    $quizzes = [];
+}
+
 $updated = 0;
 $skipped = 0;
 $errors = 0;
 
 foreach ($grouped as $attemptid => $attemptresults) {
-    $attempt = $DB->get_record('quiz_attempts', ['id' => $attemptid], '*', IGNORE_MISSING);
-    if (!$attempt) {
+    if (!isset($attempts[$attemptid])) {
         continue;
     }
+    $attempt = $attempts[$attemptid];
 
-    $quiz = $DB->get_record('quiz', ['id' => $attempt->quiz], 'id, course', IGNORE_MISSING);
-    if (!$quiz) {
+    if (!isset($quizzes[$attempt->quiz])) {
         continue;
     }
+    $quiz = $quizzes[$attempt->quiz];
 
     $cm = get_coursemodule_from_instance('quiz', $quiz->id, $quiz->course, false, IGNORE_MISSING);
     if (!$cm) {

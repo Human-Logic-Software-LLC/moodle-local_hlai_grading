@@ -131,13 +131,11 @@ $rubrics = local_hlai_grading_get_quiz_rubrics($courseid, $context);
 $itemcounts = [];
 if (!empty($rubrics)) {
     [$insql, $params] = $DB->get_in_or_equal(array_keys($rubrics), SQL_PARAMS_NAMED);
-    $countrecords = $DB->get_records_sql(
-        "SELECT rubricid, COUNT(1) AS itemcount
-           FROM {local_hlai_grading_quiz_rubric_item}
-          WHERE rubricid {$insql}
-       GROUP BY rubricid",
-        $params
-    );
+    $sql = "SELECT rubricid, COUNT(1) AS itemcount
+              FROM {local_hlai_grading_quiz_rubric_item}
+             WHERE rubricid " . $insql . "
+          GROUP BY rubricid";
+    $countrecords = $DB->get_records_sql($sql, $params);
     foreach ($countrecords as $record) {
         $itemcounts[(int)$record->rubricid] = (int)$record->itemcount;
     }

@@ -159,35 +159,66 @@ if (!$slots) {
     exit(1);
 }
 
+$slotids = array_column((array)array_values($slots), 'id');
+[$rinsql, $rparams] = $DB->get_in_or_equal($slotids, SQL_PARAMS_NAMED);
+$sql = "SELECT * FROM {question_references}
+         WHERE component = :comp AND questionarea = :area AND itemid " . $rinsql;
+$rparams['comp'] = 'mod_quiz';
+$rparams['area'] = 'slot';
+$refs = $DB->get_records_sql($sql, $rparams);
+$refbyslot = [];
+foreach ($refs as $ref) {
+    $refbyslot[(int)$ref->itemid] = $ref;
+}
+
+$bankentryids = array_column((array)array_values($refs), 'questionbankentryid');
+$versions = [];
+$versionrecords = [];
+if (!empty($bankentryids)) {
+    [$vinsql, $vparams] = $DB->get_in_or_equal($bankentryids, SQL_PARAMS_NAMED);
+    $sql = "SELECT qv.*
+              FROM {question_versions} qv
+              JOIN (SELECT questionbankentryid, MAX(version) AS maxver
+                      FROM {question_versions}
+                     WHERE questionbankentryid " . $vinsql . "
+                  GROUP BY questionbankentryid) latest
+                ON qv.questionbankentryid = latest.questionbankentryid
+               AND qv.version = latest.maxver";
+    $versionrecords = $DB->get_records_sql($sql, $vparams);
+    foreach ($versionrecords as $v) {
+        $versions[(int)$v->questionbankentryid] = $v;
+    }
+}
+
+$questionids = array_column((array)array_values($versionrecords), 'questionid');
+$questions = [];
+if (!empty($questionids)) {
+    [$qinsql, $qparams] = $DB->get_in_or_equal($questionids, SQL_PARAMS_NAMED);
+    $sql = "SELECT id, name, qtype, questiontext, questiontextformat
+              FROM {question} WHERE id " . $qinsql;
+    $questions = $DB->get_records_sql($sql, $qparams);
+}
+
 $updated = 0;
 $matched = [];
 $unmatched = [];
 
 foreach ($slots as $slot) {
-    $ref = $DB->get_record('question_references', [
-        'component' => 'mod_quiz', 'questionarea' => 'slot', 'itemid' => $slot->id,
-    ], '*', IGNORE_MISSING);
-
-    if (!$ref) {
+    if (!isset($refbyslot[$slot->id])) {
         continue;
     }
+    $ref = $refbyslot[$slot->id];
 
-    $version = $DB->get_record_sql(
-        'SELECT * FROM {question_versions} WHERE questionbankentryid = ? ORDER BY version DESC',
-        [$ref->questionbankentryid],
-        IGNORE_MULTIPLE
-    );
-    if (!$version) {
+    if (!isset($versions[$ref->questionbankentryid])) {
         continue;
     }
+    $version = $versions[$ref->questionbankentryid];
 
-    $question = $DB->get_record(
-        'question',
-        ['id' => $version->questionid],
-        'id, name, qtype, questiontext, questiontextformat',
-        IGNORE_MISSING
-    );
-    if (!$question || $question->qtype !== 'essay') {
+    if (!isset($questions[$version->questionid])) {
+        continue;
+    }
+    $question = $questions[$version->questionid];
+    if ($question->qtype !== 'essay') {
         continue;
     }
 
