@@ -26,7 +26,9 @@ namespace local_hlai_grading\privacy;
 
 use core_privacy\local\metadata\collection;
 use core_privacy\local\request\approved_contextlist;
+use core_privacy\local\request\approved_userlist;
 use core_privacy\local\request\contextlist;
+use core_privacy\local\request\userlist;
 use core_privacy\local\request\writer;
 
 /**
@@ -34,7 +36,8 @@ use core_privacy\local\request\writer;
  */
 class provider implements
     \core_privacy\local\metadata\provider,
-    \core_privacy\local\request\plugin\provider {
+    \core_privacy\local\request\plugin\provider,
+    \core_privacy\local\request\core_userlist_provider {
     /**
      * Get the list of metadata stored by this plugin.
      *
@@ -172,9 +175,9 @@ class provider implements
             return;
         }
 
-        $DB->delete_records('local_hlai_grading_queue');
-        $DB->delete_records('local_hlai_grading_results');
         $DB->delete_records('local_hlai_grading_rubric_scores');
+        $DB->delete_records('local_hlai_grading_results');
+        $DB->delete_records('local_hlai_grading_queue');
         $DB->delete_records('local_hlai_grading_log');
         $DB->delete_records('local_hlai_grading_quiz_summary');
     }
@@ -194,14 +197,64 @@ class provider implements
 
         $userid = $contextlist->get_user()->id;
 
-        $DB->delete_records('local_hlai_grading_queue', ['userid' => $userid]);
-        $DB->delete_records('local_hlai_grading_results', ['userid' => $userid]);
         $DB->delete_records_select(
             'local_hlai_grading_rubric_scores',
             'resultid IN (SELECT id FROM {local_hlai_grading_results} WHERE userid = :userid)',
             ['userid' => $userid]
         );
+        $DB->delete_records('local_hlai_grading_results', ['userid' => $userid]);
+        $DB->delete_records('local_hlai_grading_queue', ['userid' => $userid]);
         $DB->delete_records('local_hlai_grading_log', ['userid' => $userid]);
         $DB->delete_records('local_hlai_grading_quiz_summary', ['userid' => $userid]);
+    }
+
+    /**
+     * Get the list of users who have data within a context.
+     *
+     * @param userlist $userlist The userlist containing the list of users who have data in this context/plugin combination.
+     * @return void
+     */
+    public static function get_users_in_context(userlist $userlist): void {
+        $context = $userlist->get_context();
+        if ($context->contextlevel !== CONTEXT_SYSTEM) {
+            return;
+        }
+
+        $userlist->add_from_sql('userid', 'SELECT DISTINCT userid FROM {local_hlai_grading_results}', []);
+        $userlist->add_from_sql('userid', 'SELECT DISTINCT userid FROM {local_hlai_grading_queue}', []);
+        $userlist->add_from_sql('userid', 'SELECT DISTINCT userid FROM {local_hlai_grading_log}', []);
+        $userlist->add_from_sql('userid', 'SELECT DISTINCT userid FROM {local_hlai_grading_quiz_summary}', []);
+    }
+
+    /**
+     * Delete multiple users' data within a single context.
+     *
+     * @param approved_userlist $userlist The approved context and user information to delete information for.
+     * @return void
+     */
+    public static function delete_data_for_users(approved_userlist $userlist): void {
+        global $DB;
+
+        $context = $userlist->get_context();
+        if ($context->contextlevel !== CONTEXT_SYSTEM) {
+            return;
+        }
+
+        $userids = $userlist->get_userids();
+        if (empty($userids)) {
+            return;
+        }
+
+        [$insql, $params] = $DB->get_in_or_equal($userids, SQL_PARAMS_NAMED);
+
+        $DB->delete_records_select(
+            'local_hlai_grading_rubric_scores',
+            "resultid IN (SELECT id FROM {local_hlai_grading_results} WHERE userid " . $insql . ")",
+            $params
+        );
+        $DB->delete_records_select('local_hlai_grading_results', "userid " . $insql, $params);
+        $DB->delete_records_select('local_hlai_grading_queue', "userid " . $insql, $params);
+        $DB->delete_records_select('local_hlai_grading_log', "userid " . $insql, $params);
+        $DB->delete_records_select('local_hlai_grading_quiz_summary', "userid " . $insql, $params);
     }
 }
