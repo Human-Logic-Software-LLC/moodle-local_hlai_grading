@@ -25,7 +25,7 @@
 defined('MOODLE_INTERNAL') || die();
 
 $plugin->component = 'local_hlai_grading';
-$plugin->version   = 2026020900;
+$plugin->version   = 2026030300;
 $plugin->requires  = 2022112800;
 $plugin->release   = '1.0.0';
 $plugin->maturity  = MATURITY_STABLE;

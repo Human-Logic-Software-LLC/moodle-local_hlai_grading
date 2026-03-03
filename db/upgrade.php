@@ -379,5 +379,60 @@ function xmldb_local_hlai_grading_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2025120104, 'local', 'hlai_grading');
     }
 
+    // Migrate legacy table names (hlai_grading_*) to standard names (local_hlai_grading_*).
+    if ($oldversion < 2026030300) {
+        $renames = [
+            'hlai_grading_queue'         => 'local_hlai_grading_queue',
+            'hlai_grading_results'       => 'local_hlai_grading_results',
+            'hlai_grading_rubric_scores' => 'local_hlai_grading_rubric_scores',
+            'hlai_grading_log'           => 'local_hlai_grading_log',
+            'hlai_grading_config'        => 'local_hlai_grading_config',
+            'hlai_grading_act_settings'  => 'local_hlai_grading_act_settings',
+            'hlai_grading_quiz_summary'  => 'local_hlai_grading_quiz_summary',
+        ];
+        foreach ($renames as $oldname => $newname) {
+            $oldtable = new xmldb_table($oldname);
+            $newtable = new xmldb_table($newname);
+            if ($dbman->table_exists($oldtable) && !$dbman->table_exists($newtable)) {
+                $dbman->rename_table($oldtable, $newname);
+            }
+        }
+
+        // Create quiz rubric tables if they do not exist yet.
+        $rubrictable = new xmldb_table('local_hlai_grading_quiz_rubric');
+        if (!$dbman->table_exists($rubrictable)) {
+            $rubrictable->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $rubrictable->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+            $rubrictable->add_field('courseid', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+            $rubrictable->add_field('ownerid', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+            $rubrictable->add_field('visibility', XMLDB_TYPE_CHAR, '20', null, XMLDB_NOTNULL, null, 'course');
+            $rubrictable->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $rubrictable->add_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+
+            $rubrictable->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+            $rubrictable->add_index('courseidx', XMLDB_INDEX_NOTUNIQUE, ['courseid']);
+
+            $dbman->create_table($rubrictable);
+        }
+
+        $itemtable = new xmldb_table('local_hlai_grading_quiz_rubric_item');
+        if (!$dbman->table_exists($itemtable)) {
+            $itemtable->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+            $itemtable->add_field('rubricid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+            $itemtable->add_field('sortorder', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+            $itemtable->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+            $itemtable->add_field('maxscore', XMLDB_TYPE_NUMBER, '10, 5', null, XMLDB_NOTNULL, null, '0');
+            $itemtable->add_field('description', XMLDB_TYPE_TEXT, null, null, null, null, null);
+
+            $itemtable->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+            $itemtable->add_key('rubricfk', XMLDB_KEY_FOREIGN, ['rubricid'],
+                'local_hlai_grading_quiz_rubric', ['id']);
+
+            $dbman->create_table($itemtable);
+        }
+
+        upgrade_plugin_savepoint(true, 2026030300, 'local', 'hlai_grading');
+    }
+
     return true;
 }
