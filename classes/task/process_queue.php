@@ -256,8 +256,25 @@ class process_queue extends scheduled_task {
                     $airesponse = $this->request_ai_grade($gatewaypayload, $qualitysetting);
                     $providerlabel = $airesponse['provider'] ?? 'gateway';
                     $normalized = $this->normalize_ai_response($airesponse['content'] ?? '');
+
                     $score = (float)($normalized['score'] ?? 0);
-                    $maxscore = (float)($normalized['max_score'] ?? $maxgrade);
+                    $maxscore = (float)($normalized['max_score'] ?? 0);
+
+                    // Gateway may return criteria without a top-level score; derive it.
+                    if ($score <= 0 && !empty($normalized['criteria']) && is_array($normalized['criteria'])) {
+                        $criteriasum = 0.0;
+                        $criteriamax = 0.0;
+                        foreach ($normalized['criteria'] as $criterion) {
+                            $criteriasum += (float)($criterion['score'] ?? 0);
+                            $criteriamax += (float)($criterion['max_score'] ?? 0);
+                        }
+                        $score = $criteriasum;
+                        $maxscore = $criteriamax;
+                    }
+
+                    if ($maxscore <= 0) {
+                        $maxscore = $maxgrade;
+                    }
                     if ($maxscore > 0 && $maxgrade > 0 && $maxscore != $maxgrade) {
                         $score = ($score / $maxscore) * $maxgrade;
                         $maxscore = $maxgrade;
